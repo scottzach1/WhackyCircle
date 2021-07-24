@@ -13,7 +13,18 @@ git clone https://github.com/scottzach1/WhackyCircle.git
 
 3. Install the extension [Processing Language](https://marketplace.visualstudio.com/items?itemName=Tobiah.language-pde) by Tobiah Zarlez
 
-4. Run the project via `Ctrl + Shift + B`
+4. Under the `/.vscode` folder, create a new file called `settings.json`
+
+5. Inside the `settings.json` file, write the following json block, and save the file
+```json
+{ 
+    "processing.path": "<path-to-processing-folder>/processing-java"
+}
+```
+
+- Alternatively, hit `ctrl + ,` and search for "processing". Then find the "Processsing: **Path**" variable, and alter the location to be `<path-to-processing-folder>/processing-java`
+
+6. Run the project via `Ctrl + Shift + B`
 
 ### Errors
 
