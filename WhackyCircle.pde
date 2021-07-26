@@ -1,17 +1,17 @@
-Circle c = new Circle(new Point(100, 100), 50);
+Test t = new Test(5, new TestAttr[0]);
 
 void settings() {
-    size(displayWidth, displayWidth);
+  size(displayWidth/2, displayHeight/2);
 }
 
 void setup() {
-    clear();
-    surface.setTitle("Whacky Circle");
-    surface.setResizable(true);
+  clear();
+  surface.setTitle("Whacky Circle");
+  surface.setResizable(true);
 }
 
 void draw() {
-    clear();
-    fill(255);
-    c.render();
+  clear();
+  fill(255);
+  t.run();
 }
