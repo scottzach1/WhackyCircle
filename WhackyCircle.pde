@@ -1,16 +1,17 @@
+Circle c = new Circle(new Point(100, 100), 50);
+
 void settings() {
-    // TODO: Customize screen size and so on here
-    size(200, 200);
+    size(displayWidth, displayWidth);
 }
 
 void setup() {
-    // TODO: Your custom drawing and setup on applet start belongs here
     clear();
+    surface.setTitle("Whacky Circle");
+    surface.setResizable(true);
 }
 
 void draw() {
-    // TODO: Do your drawing for each frame here
     clear();
     fill(255);
-    rect(50, 50, 100, 100);
+    c.render();
 }
