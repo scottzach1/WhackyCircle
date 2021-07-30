@@ -1,0 +1,35 @@
+class PathTracker {
+  private boolean started;
+  private Thread t;
+  private Runner r;
+  private ArrayList<Pair<Long, Point>> path;
+
+  public PathTracker(){
+    r = new Runner();
+    t = new Thread(r);
+  }
+  
+  
+  public void start() {
+    t.start();    
+  }
+
+  public  ArrayList<Pair<Long, Point>> stop() {
+    if (started) {}
+    started = false;
+    return new ArrayList(path);
+  }
+  
+  class Runner implements Runnable {
+    public boolean running = false;
+    private final int FRAME_READ_MODULUS = 10;
+    
+    public void run(){
+      if (frameCount % FRAME_READ_MODULUS == 0){
+        Long time = System.currentTimeMillis();
+        Point mouse = new Point(mouseX, mouseY);
+        System.out.println(time + " " + mouse);
+      }
+    }
+  }
+}

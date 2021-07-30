@@ -7,4 +7,9 @@ class Pair<Left, Right> {
     this.left = l;
     this.right = r;
   }
+  
+  @Override
+  public String toString(){
+   return "Pair: left="+left+", right="+right; 
+  }
 }

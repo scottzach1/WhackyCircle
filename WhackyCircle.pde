@@ -1,4 +1,6 @@
-Test t = new Test(5, new TestAttr[0]);
+PathTracker pt = new PathTracker();
+boolean flick = false;
+int movingX = 0;
 
 void settings() {
   size(displayWidth/2, displayHeight/2);
@@ -11,7 +13,8 @@ void setup() {
 }
 
 void draw() {
-  clear();
   fill(255);
-  t.run();
+  stroke(255);
+  strokeWeight(2);
+  circle(movingX++, 400, 10);
 }
