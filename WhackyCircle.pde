@@ -12,5 +12,6 @@ void setup() {
 }
 
 void draw() {
+  clear();
   game.execute();
 }
