@@ -1,4 +1,5 @@
 PathTracker pt = new PathTracker();
+Game game = new Game();
 
 void settings() {
   size(displayWidth/2, displayHeight/2);
@@ -11,7 +12,5 @@ void setup() {
 }
 
 void draw() {
-  fill(255);
-  stroke(255);
-  strokeWeight(2);
+  game.execute();
 }

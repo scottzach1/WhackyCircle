@@ -1,12 +1,22 @@
 abstract class Phase {
+  public Test curTest;
   public void execute() { 
-    println("Unimplemented Phase");
+    if (curTest != null) {
+      curTest.run();
+    } else {
+      println("Current Test Undefined");
+    }
   }
 }
 
 class Phase1 extends Phase {
-  @Override
-  public void execute() {
 
+  public Phase1() {
+    this.curTest = new Test(new TestAttr() {
+      public ArrayList<Shape> shapes = new ArrayList();
+      public void execute() {
+      }
+    }
+    );
   }
 }
