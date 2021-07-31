@@ -24,7 +24,10 @@ class Test {
   public Shape curShape = new Circle(new Point(100, 100), 100);
   
   private int curIndex = 0;
-  private boolean inCenter = true; // TODO: back to false when not testing
+  
+  private Shape centerShape = new Square(new Point(displayWidth/4, displayHeight/4), 50);
+  private long centerSince = -1;
+  private boolean inCenter = false; // TODO: back to false when not testing
 
   public Test(TestAttr attribute) {
     this.attribute = attribute;
@@ -34,13 +37,22 @@ class Test {
   /**
   Run test will be run in the draw loop. Thus, this method can be considered 
   a loop. Thus, if statements can be used to alter the state of the 
-   */
+  */
   public void run() {
     attribute.execute();
     if (!inCenter) {
-      // Start the stage by running a check to see if the mouse is in the
-      // center of the screen for three seconds. Check seconds with time differences
-      // need to use a field to store
+        centerShape = new Square(new Point(displayWidth/4, displayHeight/4), 50); //Workaround for dw/dh being 0
+        centerShape.render();
+        
+        if (centerShape.isHovering(new Point(mouseX, mouseY))){
+          if (centerSince == -1) { // Just entered square, set time
+            centerSince = millis();
+          } else if (millis() - centerSince > 3000) { // Been in square, check if > 3 seconds
+            inCenter = true;
+          }
+        } else { // Not in square
+          centerSince = -1;
+        }
     } else {
       attribute.execute();
       curShape.render();
@@ -49,7 +61,7 @@ class Test {
   }
 
   /**
-  Set curShape to a new shape, and set inCenter to false;
+  Set curShape to a new shape, and set inCenter to false, and set centreSince to 0;
   */
   public void next() {
   }

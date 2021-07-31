@@ -10,6 +10,8 @@ abstract class Shape {
 
   public abstract void render();
   public abstract void isClicked(Point mouse);
+  public abstract boolean isHovering(Point mouse);
+
 }
 
 
@@ -28,6 +30,11 @@ class Circle extends Shape {
   public void isClicked(Point mouse){
     clicked = dist(mouse.x, mouse.y, p.x, p.y) < r;
   }
+  
+  @Override
+  public boolean isHovering(Point mouse){
+    return dist(mouse.x, mouse.y, p.x, p.y) < r;
+  }
 }
 
 class Square extends Shape {
@@ -39,11 +46,16 @@ class Square extends Shape {
   @Override
   public void render() {
     rectMode(RADIUS);
-    rect(p.x, p.y, r, r);
+    square(p.x, p.y, r);
   }
 
   @Override
   public void isClicked(Point mouse){
     clicked = mouse.x > p.x - r && mouse.x < p.x + r && mouse.y > p.y - r && mouse.y < p.y + r;
+  }
+  
+  @Override
+  public boolean isHovering(Point mouse){
+    return mouse.x > p.x - r && mouse.x < p.x + r && mouse.y > p.y - r && mouse.y < p.y + r;
   }
 }
