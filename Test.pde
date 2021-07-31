@@ -27,7 +27,7 @@ class Test {
     final Circle circle; // Circle that was clicked
     final ArrayList<Pair<Long, Point>> path; // timestamp and point
 
-    public Result(Point m, Circle c, ArrayList<Pair<Point, Long>> p) {
+    public Result(Point m, Circle c, ArrayList<Pair<Long, Point>> p) {
       this.mouse = m;
       this.circle = c;
       this.path = p;
