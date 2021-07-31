@@ -3,3 +3,10 @@ abstract class Phase {
     println("Unimplemented Phase");
   }
 }
+
+class Phase1 extends Phase {
+  @Override
+  public void execute() {
+
+  }
+}

@@ -10,8 +10,8 @@ class PathTracker {
     t = new Runner();
     t.start();
   }
-
-  public  ArrayList<Pair<Long, Point>> stop() {
+  
+  public ArrayList<Pair<Long, Point>> stop() {
     if (!running) return new ArrayList();
     t.interrupt();
     running = false;
@@ -21,7 +21,7 @@ class PathTracker {
   
   class Runner extends Thread {
       public boolean running = false;
-      private final int READS_PER_SEC = 100;
+      private final int READS_PER_SEC = 60;
 
       public void run() {
         Long time = System.currentTimeMillis();
