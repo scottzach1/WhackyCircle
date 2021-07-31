@@ -25,13 +25,12 @@ class Test {
   public Shape curShape;
   private int curIndex = 0;
   
-  private Shape centerShape = new Square(new Point(displayWidth/4, displayHeight/4), 50);
-  private long centerSince = -1;
-  private boolean inCenter = false; // TODO: back to false when not testing
+  private Shape centreShape = new Square(new Point(displayWidth/4, displayHeight/4), 50);
+  private long centreSince = -1;
+  private boolean inCentre = false; // TODO: back to false when not testing
 
   public Test(TestAttr attribute) {
     this.attribute = attribute;
-    println(attribute.shapes);
     this.results = new ArrayList<Result>(); // Start of test will have no results
   }
 
@@ -40,21 +39,19 @@ class Test {
   a loop. Thus, if statements can be used to alter the state of the 
   */
   public void run() {
-    //println(attribute.shapes);
     attribute.execute();
-    if (!inCenter) {
-        centerShape = new Square(new Point(displayWidth/4, displayHeight/4), 50); //Workaround for dw/dh being 0
-        centerShape.render();
+    if (!inCentre) {
+        centreShape = new Square(new Point(displayWidth/4, displayHeight/4), 50); //Workaround for dw/dh being 0
+        centreShape.render();
         
-        if (centerShape.isHovering(new Point(mouseX, mouseY))){
-          if (centerSince == -1) { // Just entered square, set time
-            centerSince = millis();
-          } else if (millis() - centerSince > 3000) { // Been in square, check if > 3 seconds
-            inCenter = true;
-            next();
+        if (centreShape.isHovering(new Point(mouseX, mouseY))){
+          if (centreSince == -1) { // Just entered square, set time
+            centreSince = millis();
+          } else if (millis() - centreSince > 3000) { // Been in square, check if > 3 seconds
+            inCentre = true;
           }
         } else { // Not in square
-          centerSince = -1;
+          centreSince = -1;
         }
     } else {
       attribute.execute();
@@ -64,11 +61,11 @@ class Test {
   }
 
   /**
-  Set curShape to a new shape, and set inCenter to false, and set centerSince to -1;
+  Set curShape to a new shape, and set inCentre to false, and set centreSince to -1;
   */
   public void next() {
-    inCenter = false;
-    centerSince = -1;
+    inCentre = false;
+    centreSince = -1;
     curIndex++;
     curShape = attribute.shapes.get(curIndex);
   }
