@@ -22,8 +22,8 @@ class Test {
   private final TestAttr attribute;
   private ArrayList<Result> results;
   
-  public Shape curShape;
   private int curIndex = 0;
+  public Shape curShape;
   
   private Shape centreShape = new Square(new Point(displayWidth/4, displayHeight/4), 50);
   private long centreSince = -1;
@@ -32,6 +32,8 @@ class Test {
   public Test(TestAttr attribute) {
     this.attribute = attribute;
     this.results = new ArrayList<Result>(); // Start of test will have no results
+    
+    curShape = attribute.shapes.get(curIndex);
   }
 
   /**
@@ -56,7 +58,9 @@ class Test {
     } else {
       attribute.execute();
       curShape.render();
-      println(curShape.clicked);
+      if (curShape.clicked) {
+        next();
+      }
     }
   }
 
@@ -66,8 +70,12 @@ class Test {
   public void next() {
     inCentre = false;
     centreSince = -1;
-    curIndex++;
-    curShape = attribute.shapes.get(curIndex);
+    if (curIndex < attribute.shapes.size() - 1){
+      curIndex++;
+      curShape = attribute.shapes.get(curIndex);
+    } else {
+      println("Wohoo");
+    }
   }
 
   // immutable
