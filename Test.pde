@@ -21,8 +21,8 @@ class Test {
 
   private final TestAttr attribute;
   private ArrayList<Result> results;
-  public Shape curShape = new Circle(new Point(100, 100), 100);
   
+  public Shape curShape;
   private int curIndex = 0;
   
   private Shape centerShape = new Square(new Point(displayWidth/4, displayHeight/4), 50);
@@ -31,6 +31,7 @@ class Test {
 
   public Test(TestAttr attribute) {
     this.attribute = attribute;
+    println(attribute.shapes);
     this.results = new ArrayList<Result>(); // Start of test will have no results
   }
 
@@ -39,6 +40,7 @@ class Test {
   a loop. Thus, if statements can be used to alter the state of the 
   */
   public void run() {
+    //println(attribute.shapes);
     attribute.execute();
     if (!inCenter) {
         centerShape = new Square(new Point(displayWidth/4, displayHeight/4), 50); //Workaround for dw/dh being 0
@@ -49,6 +51,7 @@ class Test {
             centerSince = millis();
           } else if (millis() - centerSince > 3000) { // Been in square, check if > 3 seconds
             inCenter = true;
+            next();
           }
         } else { // Not in square
           centerSince = -1;
@@ -61,9 +64,13 @@ class Test {
   }
 
   /**
-  Set curShape to a new shape, and set inCenter to false, and set centreSince to 0;
+  Set curShape to a new shape, and set inCenter to false, and set centerSince to -1;
   */
   public void next() {
+    inCenter = false;
+    centerSince = -1;
+    curIndex++;
+    curShape = attribute.shapes.get(curIndex);
   }
 
   // immutable
