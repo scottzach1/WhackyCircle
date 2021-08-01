@@ -6,6 +6,14 @@
   return l;
 }
 
-boolean inBounds(int val, int lower, int upper) {
+boolean inBoundsIncl(int val, int lower, int upper) {
   return lower <= val && val <= upper;
+}
+
+boolean inBoundsExcl(int val, int lower, int upper) {
+  return lower < val && val < upper;
+}
+
+<T> T listGet(ArrayList<T> l, int index, T fallback) {
+  return inBoundsExcl(index, -1, l.size()) ? l.get(index) : fallback;
 }

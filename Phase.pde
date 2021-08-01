@@ -1,47 +1,43 @@
 abstract class Phase {
-  public boolean isDone;
-  public Test curTest;
-  
-  protected ArrayList < Test > tests = new ArrayList();
+  protected ArrayList <Test> tests = new ArrayList();
   private int testIndex = 0;
   
   public void execute() {
-    if (curTest != null) {
-      curTest.execute();
-      if (curTest.isDone) {
-        next();
-      }
-    } else if (testIndex == 0) {
-      next();
-    } else {
-      println("Current Test Undefined");
+    if (completedTests()) return;
+
+    Test t = getTest();
+
+    if (t == null) {
+      println("WARN: Current Test Undefined");
+      return;
     }
+
+    t.execute();
+
+    if (t.isDone) ++testIndex;
   }
-  
-  private void next() {
-    if (testIndex < tests.size()) {
-      println(tests.get(testIndex));
-      curTest = tests.get(testIndex);
-    } else {
-      isDone = true;
-    }
-    testIndex++;
+
+  public boolean completedTests() {
+    return testIndex >= tests.size();
+  }
+
+  public Test getTest() {
+    return listGet(tests, testIndex, null);
   }
   
   public void initialize() { // Implement for each phase
-    println("Phase Initialize Unimplemented");
+    println("WARN: " + this.getClass().getSimpleName() + " Initialize Unimplemented");
   }
 }
 
 class Phase1 extends Phase {
   
   public void initialize() {
-    this.tests.add(new Test1());
-    this.tests.add(new Test1());
-
-    for (Test t : this.tests){
-      t.initialize();
-    }
+    Test[] ts = {new Test1(), new Test1()};
+    
+    this.tests = toList(ts);
+    
+    for (Test t : this.tests) t.initialize();
   }
   
 }

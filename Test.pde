@@ -124,8 +124,6 @@ class Test1 extends Test {
         new Circle(90, 100, 75)
       };
     this.shapes = toList(ss);
-    
-    println(this.shapes);
   }
   
   // Implement in solid classes  

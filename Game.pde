@@ -6,11 +6,12 @@ enum GameState {
 }
 
 class Game {
-  private boolean initialized;
   private GameState gameState = GameState.RUNNING_PHASES;
-  private ArrayList<Phase>phases;
 
+  private ArrayList<Phase>phases;
   private int phaseIndex = 0;
+  
+  private boolean initialized;
 
   public void initialize() {
     new GameCreator().start();
@@ -28,7 +29,7 @@ class Game {
   }
 
   public Phase getPhase() {
-    return (phaseIndex < phases.size()) ? phases.get(phaseIndex) : null;
+    return listGet(phases, phaseIndex, null);
   }
 
   public void execute() {
@@ -43,6 +44,7 @@ class Game {
       runningState();
       break;
     case GAME_COMPLETE:
+      gameCompleteState();
       break;
     }
   }
@@ -55,17 +57,19 @@ class Game {
 
     Phase p = getPhase();
 
-    if (p != null) p.execute();
-    else {
+    if (p == null) {
       println("WARN: Current Phase Undefined");
       return;
     }
 
-    if (p.isDone) ++phaseIndex;
+    p.execute();
+
+    if (p.completedTests()) ++phaseIndex;
     if (phaseIndex == phases.size()) gameState = GameState.GAME_COMPLETE;
   }
 
   private void gameCompleteState() {
-    println("Game Complete 🥳");
+    println("Game Complete :party-parrot:");
+    gameState = GameState.MAIN_MENU;
   }
 }
