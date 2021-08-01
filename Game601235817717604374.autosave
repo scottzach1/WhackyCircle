@@ -1,0 +1,25 @@
+class Game {
+  private GameState gameState = GameState.MAIN_MENU;
+  Phase curPhase =new Phase1();
+
+
+  public void execute() {
+    switch (gameState) {
+    case LOADING:
+      println("HERE");
+      break;
+    case MAIN_MENU:
+      println("MAIN MENU");
+    }
+    //curPhase.execute();
+  }
+
+} // TODO(cookharr): Make whole game :D
+
+
+/**
+ENUMS DON'T WORK IN PROCESSING
+Work around
+*/
+abstract class GameState{}
+class Loading extends GameState{}

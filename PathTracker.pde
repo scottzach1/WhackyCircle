@@ -2,7 +2,7 @@ class PathTracker {
   private boolean running;
   private Thread t;
   private ArrayList<Pair<Long, Point>> path;
-
+  
   public void start() {
     if (running) return;
     running = true;
@@ -20,18 +20,21 @@ class PathTracker {
   
   
   class Runner extends Thread {
-      public boolean running = false;
-      private final int READS_PER_SEC = 60;
-
-      public void run() {
-        Long time = System.currentTimeMillis();
-        while (true){
-          if (t.isInterrupted()) {break;}
-          Long diff = System.currentTimeMillis() - time;
-          if ((diff > 0) && (READS_PER_SEC <= 0 || diff % (1000 / READS_PER_SEC) == 0)) {
-            time = System.currentTimeMillis();
-            path.add(new Pair(time, new Point(mouseX, mouseY)));
-          }}
+    public boolean running = false;
+    private final int READS_PER_SEC = 60;
+    
+    public void run() {
+      long time = millis();
+      while(true) {
+        if (this.isInterrupted()) {
+          break;
+        }
+        Long diff = millis() - time;
+        if ((diff > 0) && (READS_PER_SEC <= 0 || diff % (1000 / READS_PER_SEC) == 0)) {
+          time = millis();
+          path.add(new Pair(time, new Point(mouseX, mouseY)));
+        }
       }
+    }
   }
 }

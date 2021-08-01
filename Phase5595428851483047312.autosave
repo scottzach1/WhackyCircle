@@ -1,0 +1,40 @@
+abstract class Phase {
+  public boolean isDone;
+  public Test curTest;
+
+  private ArrayList<Test> tests = new ArrayList();
+
+  public void execute() { 
+    if (curTest != null) {
+      curTest.run();
+    } else {
+      println("Current Test Undefined");
+    }
+  }
+
+  public void initialize(){
+      println("Phase Initialize Unimplemented");
+  }
+}
+
+class Phase1 extends Phase {
+
+  public void initialize(){
+    Test t1 = new Test(new TestAttr() {      
+      {
+        this.shapes = new ArrayList<Shape>(java.util.Arrays.asList(
+          new Circle(new Point(random(0 + rad, displayWidth - rad), random(0 + rad, displayHeight - rad), rad), 
+          new Circle(new Point(200, 150), 100), 
+          new Circle(new Point(20, 62), 25), 
+          new Circle(new Point(90, 100), 75)
+         ));
+      }
+      
+      public void execute() {
+
+      }
+    }
+  }
+
+
+}

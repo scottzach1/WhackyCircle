@@ -6,13 +6,13 @@ test is responsible for executing the TestAttr, then generating a
 random circle.
 */
 abstract class Test {
-  
-  private final int CENTER_HOLD_SECS = 1;
+
+  private final int CENTER_HOLD_SECS = 2;
   
   protected ArrayList<Shape> shapes;
   protected ArrayList<Result> results;
   
-  private int shapeIndex = 0;
+  private int curIndex = 0;
   public boolean isDone;
   public Shape curShape;
   
@@ -28,20 +28,20 @@ abstract class Test {
   
   // Implement in solid classes
   public void initialize() {
-    println("Unimplemented Test Initialize");
+    println("Unimplemented Shapes Generator");
   }
-  
+
   // Implement in solid classes  
-  protected void preDrawSetup() {
-    println("Unimplemented preDrawSetup");
+  public void execute() {
+    println("Unimplemented Execute");
   } 
   
   /**
   Run test will be run in the draw loop. Thus, this method can be considered 
   a loop. Thus, if statements can be used to alter the state of the 
   */
-  public void execute() {
-    preDrawSetup(); // Execture background an global changes
+  public void run() {
+    this.execute(); // Execture background an global changes
     if (!inCentre) {
       mouseCenter();
     } else {
@@ -54,6 +54,7 @@ abstract class Test {
   TODO: Display count down timer
   */
   private void mouseCenter() {
+    println(displayHeight);
     centreShape = new Square(new Point(displayWidth / 4, displayHeight / 4), 50); //Workaround for dw/dh being 0
     centreShape.render();
     
@@ -72,15 +73,10 @@ abstract class Test {
   Displays the current shape, and checks if the shape has been clicked.
   */
   private void shapeShow() {
-    if (curShape != null) {
-      curShape.render();
-      if(curShape.clicked) {
-        next();
-      }
-    } else if (shapeIndex == 0) {
+    pt.start();
+    curShape.render();
+    if (curShape.clicked) {
       next();
-    } else {
-      println("Current Shape Undefined");
     }
   }
   
@@ -90,9 +86,9 @@ abstract class Test {
   private void next() {
     inCentre = false;
     centreSince = -1;
-    if (shapeIndex < this.shapes.size()) {
-      curShape = this.shapes.get(shapeIndex);
-      shapeIndex++;
+    if (curIndex < this.shapes.size()) {
+      curShape = this.shapes.get(curIndex);
+      curIndex++;
     } else {
       isDone = true;
     }
@@ -118,24 +114,32 @@ class Test1 extends Test {
   
   // Implement in solid classes
   public void initialize() {
-    Shape[] ss = {
-      new Circle(200, 150, 100),
-        new Circle(20, 62, 25),
-        new Circle(90, 100, 75)
-      };
+    // Shape[] ss = {
+    //       new Circle(new Point(200, 150), 100),
+    //       new Circle(new Point(20, 62), 25),
+    //       new Circle(new Point(90, 100), 75)
+    //       };
+    // this.shapes = new ArrayList(ss.asList());
+
+      // Shape[] ss = {
+    //       new Circle(new Point(200, 150), 100),
+    //       new Circle(new Point(20, 62), 25),
+    //       new Circle(new Point(90, 100), 75)
+    //       };
+    // this.shapes = new ArrayList(ss.asList());
+
+    Shape[] ss= {new Circle(200, 150, 100), new Circle(20, 62, 25),new Circle(90, 100, 75)};
     this.shapes = toList(ss);
-    
-    println(this.shapes);
   }
-  
+
   // Implement in solid classes  
-  protected void preDrawSetup() {} 
+  public void execute() {} 
 }
 
 ArrayList<Shape> toList(Shape[] arr) {
   ArrayList<Shape> l = new ArrayList();
-  
-  for (int i = 0; i < arr.length; ++i) l.add(arr[i]);
-  
+
+  for (int i=0; i<arr.length; ++i) l.add(arr[i]);
+
   return l;
 }
