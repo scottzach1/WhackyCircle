@@ -30,24 +30,13 @@ class Game {
   public void execute() {
     switch(gameState) {
     case MAIN_MENU:
-      // TODO:
+      menuState();
       break;
     case LOADING:
-      //TODO:
+      loadingState();
       break;
     case RUNNING_PHASES:
-      if (initialized) {
-        if (curPhase != null) {
-          curPhase.execute();
-          if (curPhase.isDone) {
-            next();
-          }
-        } else if (phaseIndex == 0) {
-          next();
-        } else {
-          println("Current Phase Undefined");
-        }
-      }
+      runningState();
       break;
     }
   }
@@ -60,5 +49,23 @@ class Game {
       println("WOOHOO");
     }
     phaseIndex++;
+  }
+
+  private void menuState() {}
+  private void loadingState() {}
+
+  private void runningState() {
+    if (initialized) {
+        if (curPhase != null) {
+          curPhase.execute();
+          if (curPhase.isDone) {
+            next();
+          }
+        } else if (phaseIndex == 0) {
+          next();
+        } else {
+          println("Current Phase Undefined");
+        }
+      }
   }
 }
