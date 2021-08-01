@@ -6,7 +6,7 @@ enum GameState {
 }
 
 class Game {
-  private GameState gameState = GameState.RUNNING_PHASES;
+  private GameState gameState = GameState.MAIN_MENU;
 
   private ArrayList<Phase>phases;
   private int phaseIndex = 0;
@@ -49,8 +49,29 @@ class Game {
     }
   }
 
+  public void handleMouse(int x, int y) {
+    switch (gameState) {
+    case MAIN_MENU:
+      gameState = GameState.RUNNING_PHASES;
+      break;
+    case LOADING:
+      break;
+    case RUNNING_PHASES:
+      try {
+        getPhase().getTest().getShape().tryClick(x, y);
+      } catch(NullPointerException e) { /* No shape for user to click */ }
+      break;
+    case GAME_COMPLETE:
+      gameCompleteState();
+      break;
+    }
+  }
+
   private void menuState() {}
-  private void loadingState() {}
+  private void loadingState() {
+    initialize();
+    gameState = GameState.RUNNING_PHASES;
+  }
 
   private void runningState() {
     if (!initialized) return;
