@@ -6,6 +6,6 @@
 */
 void mousePressed() {
   try {
-    game.getPhase().getTest().curShape.isClicked(new Point(mouseX, mouseY));
+    game.getPhase().getTest().curShape.tryClick(mouseX, mouseY);
   } catch (NullPointerException e) {};
 }

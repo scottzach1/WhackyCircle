@@ -9,4 +9,8 @@ class Point {
   public String toString(){
    return "Point: x=" + x + ", y=" + y; 
   }
+
+  float distanceFrom(Point p) {
+    return dist(x, y, p.x, p.y);
+  }
 }

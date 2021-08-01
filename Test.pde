@@ -57,7 +57,7 @@ abstract class Test {
     centreShape = new Square(new Point(displayWidth / 4, displayHeight / 4), 50); //Workaround for dw/dh being 0
     centreShape.render();
     
-    if (centreShape.isHovering(new Point(mouseX, mouseY))) {
+    if (centreShape.within(new Point(mouseX, mouseY))) {
       if (centreSince == -1) { // Just entered square, set time
         centreSince = millis();
       } else if ((millis() - centreSince) > (CENTER_HOLD_SECS * 1000)) { // Been in square, check if > 3 seconds
@@ -74,7 +74,7 @@ abstract class Test {
   private void shapeShow() {
     if (curShape != null) {
       curShape.render();
-      if(curShape.clicked) {
+      if(curShape.hasBeenClicked()) {
         next();
       }
     } else if (shapeIndex == 0) {
