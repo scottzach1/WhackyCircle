@@ -43,7 +43,7 @@ class Game {
       runningState();
       break;
     case GAME_COMPLETE:
-
+      break;
     }
   }
 
