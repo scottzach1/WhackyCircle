@@ -8,6 +8,7 @@ random circle.
 abstract class Test {
   
   private final int CENTER_HOLD_SECS = 1;
+  public static final int CENTRE_SIZE = 50;
   
   protected ArrayList<Shape> shapes;
   protected ArrayList<Result> results;
@@ -48,18 +49,18 @@ abstract class Test {
   public void execute() {
     preDrawSetup(); // Execture background an global changes
     if (!playerReady) {
-      mouseCenter();
+      mouseCentre();
     } else {
       shapeShow();
     }
   }
   
   /**
-   * Displays an area in the center of the screen where the mouse must go before the next round.
+   * Displays an area in the centre of the screen where the mouse must go before the next round.
    * TODO: Display count down timer
    */
-  private void mouseCenter() {
-    Shape centreShape = new Square(displayWidth / 4, displayHeight / 4, 50);
+  private void mouseCentre() {
+    Shape centreShape = new Square(displayWidth / 4, displayHeight / 4, CENTRE_SIZE);
     centreShape.render();
 
     if (!centreShape.within(mouseX, mouseY)) {

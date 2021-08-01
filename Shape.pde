@@ -31,6 +31,11 @@ abstract class Shape {
   public boolean hasBeenClicked() {
     return hasBeenClicked;
   }
+
+  @Override
+  public String toString() {
+    return "[" + getClass().getSimpleName() + ": p=" + p.toString() + ", r=" + r + "]";
+  }
 }
 
 class Circle extends Shape {
