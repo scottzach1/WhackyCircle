@@ -60,7 +60,7 @@ abstract class Test {
    * TODO: Display count down timer
    */
   private void mouseCentre() {
-    Shape centreShape = new Square(displayWidth / 4, displayHeight / 4, CENTRE_SIZE);
+    Shape centreShape = new Square(width / 2 - CENTRE_SIZE, height / 2 - CENTRE_SIZE, CENTRE_SIZE);
     centreShape.render();
 
     if (!centreShape.within(mouseX, mouseY)) {
@@ -109,17 +109,15 @@ abstract class Test {
     }
   }
 }
+// processing-core-PApplet
+
+ShapeBuilder builder = new ShapeBuilder();
 
 class Test1 extends Test {
   
   // Implement in solid classes
   public void initialize() {
-    Shape[] ss = {
-      new Circle(200, 150, 100),
-        new Circle(20, 62, 25),
-        new Circle(90, 100, 75)
-      };
-    this.shapes = toList(ss);
+    this.shapes = builder.addType(ShapeType.CIRCLE).times(3).toList();
   }
   
   // Implement in solid classes  

@@ -67,14 +67,13 @@ class ShapeBuilder {
 
   private Shape sampleOne() {
     ShapeType st = types.get(randomInt(types.size()));
-    println(st);
     return createRandom(st);
   }
 
   private Shape createRandom(ShapeType st) {
     int centreSize = Test.CENTRE_SIZE;
-    int centreX = displayWidth / 2;
-    int centreY = displayHeight / 2;
+    int centreX = width / 2;
+    int centreY = height / 2;
 
     int radius = randomInt(lowerRadius, upperRadius);
     int x = -1, y = -1;
@@ -84,8 +83,8 @@ class ShapeBuilder {
       inBoundsExcl(x, centreX - centreSize - radius, centreX + centreSize + radius) && 
       inBoundsExcl(y, centreY - centreSize - radius, centreY + centreSize + radius)
     )) {
-      x = randomInt(radius, displayWidth - radius);
-      y = randomInt(radius, displayHeight - radius);
+      x = randomInt(radius, width - radius);
+      y = randomInt(radius, height - radius);
     }
 
     Shape s;
@@ -100,7 +99,6 @@ class ShapeBuilder {
         s = new Square(x, y, radius);
         break;
     }
-    println(s);
     return s;
   }
 }
