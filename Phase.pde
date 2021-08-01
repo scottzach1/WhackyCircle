@@ -14,7 +14,7 @@ abstract class Phase {
 
     t.execute();
 
-    if (t.isDone) ++testIndex;
+    if (t.completedShapes()) ++testIndex;
   }
 
   public boolean completedTests() {
@@ -26,7 +26,7 @@ abstract class Phase {
   }
   
   public void initialize() { // Implement for each phase
-    println("WARN: " + this.getClass().getSimpleName() + " Initialize Unimplemented");
+    println("WARN: " + getClassName(this, "Phase") + " Init Unimplemented");
   }
 }
 

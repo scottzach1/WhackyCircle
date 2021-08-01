@@ -17,3 +17,8 @@ boolean inBoundsExcl(int val, int lower, int upper) {
 <T> T listGet(ArrayList<T> l, int index, T fallback) {
   return inBoundsExcl(index, -1, l.size()) ? l.get(index) : fallback;
 }
+
+String getClassName(Object o, String fallback) {
+  String s = o.getClass().getSimpleName();
+  return (s.isEmpty()) ? fallback : s;
+}
