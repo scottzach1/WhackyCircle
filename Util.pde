@@ -5,3 +5,7 @@
   
   return l;
 }
+
+boolean inBounds(int val, int lower, int upper) {
+  return lower <= val && val <= upper;
+}
