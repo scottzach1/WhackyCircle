@@ -74,6 +74,6 @@ class Square extends Shape {
   public boolean within(Point mouse) {
     return true &&
       inBoundsExcl(mouse.x, p.x - r, p.x + r) &&
-      inBoundsExcl(mouse.y, p.y - r, p.x + r);
+      inBoundsExcl(mouse.y, p.y - r, p.y + r);
   }
 }
