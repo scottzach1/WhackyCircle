@@ -8,17 +8,15 @@ random circle.
 abstract class Test {
   
   private final int CENTER_HOLD_SECS = 1;
+  public static final int CENTRE_SIZE = 50;
   
   protected ArrayList<Shape> shapes;
   protected ArrayList<Result> results;
   
   private int shapeIndex = 0;
-  public boolean isDone;
-  public Shape curShape;
-  
-  private Shape centreShape = new Square(new Point(displayWidth / 4, displayHeight / 4), 50);
-  private long centreSince = -1;
-  private boolean inCentre = false; // TODO: back to false when not testing
+
+  private long centreSince = Long.MAX_VALUE;
+  private boolean playerReady = false; // TODO(lckrist): back to false when not testing
   
   public Test() {
     this.shapes = new ArrayList();
@@ -28,43 +26,52 @@ abstract class Test {
   
   // Implement in solid classes
   public void initialize() {
-    println("Unimplemented Test Initialize");
+    println("WARN: " + getClassName(this, "Test") + " Init Unimplemented");
   }
   
   // Implement in solid classes  
   protected void preDrawSetup() {
-    println("Unimplemented preDrawSetup");
-  } 
+    println("WARN: " + getClassName(this, "Test") + " PreDraw Unimplemented");
+  }
+
+  public Shape getShape() {
+    return listGet(shapes, shapeIndex, null);
+  }
+
+  public boolean completedShapes() {
+    return shapeIndex >= shapes.size();
+  }
   
   /**
-  Run test will be run in the draw loop. Thus, this method can be considered 
-  a loop. Thus, if statements can be used to alter the state of the 
-  */
+   * Run test will be run in the draw loop. Thus, this method can be considered 
+   * a loop. Thus, if statements can be used to alter the state of the 
+   */
   public void execute() {
     preDrawSetup(); // Execture background an global changes
-    if (!inCentre) {
-      mouseCenter();
+    if (!playerReady) {
+      mouseCentre();
     } else {
       shapeShow();
     }
   }
   
   /**
-  Displays an area in the center of the screen where the mouse must go before the next round.
-  TODO: Display count down timer
-  */
-  private void mouseCenter() {
-    centreShape = new Square(new Point(displayWidth / 4, displayHeight / 4), 50); //Workaround for dw/dh being 0
+   * Displays an area in the centre of the screen where the mouse must go before the next round.
+   * TODO: Display count down timer
+   */
+  private void mouseCentre() {
+    Shape centreShape = new Square(width / 2 - CENTRE_SIZE, height / 2 - CENTRE_SIZE, CENTRE_SIZE);
     centreShape.render();
-    
-    if (centreShape.isHovering(new Point(mouseX, mouseY))) {
-      if (centreSince == -1) { // Just entered square, set time
-        centreSince = millis();
-      } else if ((millis() - centreSince) > (CENTER_HOLD_SECS * 1000)) { // Been in square, check if > 3 seconds
-        inCentre = true;
-      }
-    } else { // Not in square
-      centreSince = -1;
+
+    if (!centreShape.within(mouseX, mouseY)) {
+      centreSince = Long.MAX_VALUE; // Not in square.
+    }
+
+    centreSince = Math.min(centreSince, millis());
+
+    // Check if been in square > CENTER_HOLD_SECS seconds.
+    if ((millis() - centreSince) > (CENTER_HOLD_SECS * 1000)) {
+      playerReady = true;
     }
   }
   
@@ -72,29 +79,20 @@ abstract class Test {
   Displays the current shape, and checks if the shape has been clicked.
   */
   private void shapeShow() {
-    if (curShape != null) {
-      curShape.render();
-      if(curShape.clicked) {
-        next();
-      }
-    } else if (shapeIndex == 0) {
-      next();
-    } else {
-      println("Current Shape Undefined");
+    if (completedShapes()) return;
+
+    Shape s = getShape();
+
+    if (s == null) {
+      println("WARN: Current Shape Undefined");
+      return;
     }
-  }
-  
-  /**
-  Set curShape to a new shape, and set inCentre to false, and set centreSince to -1;
-  */
-  private void next() {
-    inCentre = false;
-    centreSince = -1;
-    if (shapeIndex < this.shapes.size()) {
-      curShape = this.shapes.get(shapeIndex);
-      shapeIndex++;
-    } else {
-      isDone = true;
+
+    s.render();
+
+    if (s.hasBeenClicked()) {
+      playerReady = false;
+      ++shapeIndex;
     }
   }
   
@@ -111,31 +109,17 @@ abstract class Test {
     }
   }
 }
+// processing-core-PApplet
 
-
+ShapeBuilder builder = new ShapeBuilder();
 
 class Test1 extends Test {
   
   // Implement in solid classes
   public void initialize() {
-    Shape[] ss = {
-      new Circle(200, 150, 100),
-        new Circle(20, 62, 25),
-        new Circle(90, 100, 75)
-      };
-    this.shapes = toList(ss);
-    
-    println(this.shapes);
+    this.shapes = builder.addType(ShapeType.CIRCLE).times(3).toList();
   }
   
   // Implement in solid classes  
   protected void preDrawSetup() {} 
-}
-
-ArrayList<Shape> toList(Shape[] arr) {
-  ArrayList<Shape> l = new ArrayList();
-  
-  for (int i = 0; i < arr.length; ++i) l.add(arr[i]);
-  
-  return l;
 }

@@ -5,7 +5,5 @@
 * unitl the mouse has been released. 
 */
 void mousePressed() {
-  try {
-    game.curPhase.curTest.curShape.isClicked(new Point(mouseX, mouseY));
-  } catch (NullPointerException e) {println(e);};
+  game.handleMouse(mouseX, mouseY);
 }
