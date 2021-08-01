@@ -1,16 +1,22 @@
+PathTracker pt = new PathTracker();
+Game game = new Game();
+
+
 void settings() {
-    // TODO: Customize screen size and so on here
-    size(200, 200);
+  size(displayWidth / 2, displayHeight / 2);
 }
 
 void setup() {
-    // TODO: Your custom drawing and setup on applet start belongs here
-    clear();
+  clear();
+  surface.setTitle("Whacky Circle");
+  surface.setResizable(true);
+  // FIXME: It would be nice to render later, it does not respect my window size (Zac).
+  // Perhaps when the user starts the game? (my screen states it is 2560x720 until
+  // I manually resize it slightly - this is definitely not its actual size).
+  game.initialize();
 }
 
 void draw() {
-    // TODO: Do your drawing for each frame here
-    clear();
-    fill(255);
-    rect(50, 50, 100, 100);
+  clear();
+  game.execute();
 }
