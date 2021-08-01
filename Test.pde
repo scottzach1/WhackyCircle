@@ -131,11 +131,3 @@ class Test1 extends Test {
   // Implement in solid classes  
   protected void preDrawSetup() {} 
 }
-
-ArrayList<Shape> toList(Shape[] arr) {
-  ArrayList<Shape> l = new ArrayList();
-  
-  for (int i = 0; i < arr.length; ++i) l.add(arr[i]);
-  
-  return l;
-}

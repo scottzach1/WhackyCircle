@@ -1,11 +1,13 @@
 enum GameState {
-  MAIN_MENU, LOADING, RUNNING_PHASES
+  MAIN_MENU,
+  LOADING,
+  RUNNING_PHASES
 }
 
 class Game {
   private boolean initialized;
   private GameState gameState = GameState.RUNNING_PHASES;
-  private ArrayList<Phase> phases;
+  private ArrayList < Phase > phases;
   private int phaseIndex = 0;
 
   public Phase curPhase = new Phase1();
@@ -14,21 +16,20 @@ class Game {
     new GameCreator().start();
   }
 
-  class GameCreator extends Thread {    
+  class GameCreator extends Thread {
     public void run() {
-      phases = new ArrayList();
-      phases.add(new Phase1());
-      phases.add(new Phase1());
+      Phase[] phs = { new Phase1(), new Phase1() };
 
-      for (Phase ph : phases) {
-        ph.initialize();
-      }
+      phases = toList(phs);
+
+      for (Phase ph: phases) ph.initialize();
+
       initialized = true;
     }
-  } 
+  }
 
   public void execute() {
-    switch(gameState) {
+    switch (gameState) {
     case MAIN_MENU:
       menuState();
       break;
@@ -41,12 +42,11 @@ class Game {
     }
   }
 
-
-  public void next(){
+  public void next() {
     if (phaseIndex < phases.size()) {
       curPhase = phases.get(phaseIndex);
     } else {
-      println("WOOHOO");
+      println("Game Complete 🥳");
     }
     phaseIndex++;
   }
@@ -55,17 +55,17 @@ class Game {
   private void loadingState() {}
 
   private void runningState() {
-    if (initialized) {
-        if (curPhase != null) {
-          curPhase.execute();
-          if (curPhase.isDone) {
-            next();
-          }
-        } else if (phaseIndex == 0) {
-          next();
-        } else {
-          println("Current Phase Undefined");
-        }
+    if (!initialized) return;
+
+    if (curPhase != null) {
+      curPhase.execute();
+      if (curPhase.isDone) {
+        next();
       }
+    } else if (phaseIndex == 0) {
+      next();
+    } else {
+      println("WARN: Current Phase Undefined");
+    }
   }
 }
