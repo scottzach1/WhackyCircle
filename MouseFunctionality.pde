@@ -5,7 +5,5 @@
 * unitl the mouse has been released. 
 */
 void mousePressed() {
-  try {
-    game.getPhase().getTest().getShape().tryClick(mouseX, mouseY);
-  } catch (NullPointerException e) {};
+  game.handleMouse(mouseX, mouseY);
 }

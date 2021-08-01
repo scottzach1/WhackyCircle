@@ -22,3 +22,11 @@ String getClassName(Object o, String fallback) {
   String s = o.getClass().getSimpleName();
   return (s.isEmpty()) ? fallback : s;
 }
+ 
+ int randomInt(int upper) {
+   return int(random(upper));
+ }
+
+ int randomInt(int lower, int upper) {
+   return int(random(lower, upper));
+ }
