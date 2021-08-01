@@ -8,7 +8,7 @@ enum GameState {
 class Game {
   private boolean initialized;
   private GameState gameState = GameState.RUNNING_PHASES;
-  private ArrayList < Phase > phases;
+  private ArrayList<Phase>phases;
 
   private int phaseIndex = 0;
 
