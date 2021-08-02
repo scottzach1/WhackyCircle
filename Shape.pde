@@ -82,3 +82,33 @@ class Square extends Shape {
       inBoundsIncl(point.y, p.y - r, p.y + r);
   }
 }
+
+
+class Image extends Shape {
+  private PImage img;
+  
+  public Image(PImage i, Point p, int r) {
+    super(p, r);
+    img = i;
+  }
+
+  public Image(PImage i, int x, int y, int r) {
+    super(x, y, r);
+    img = i;
+  }
+  
+  @Override
+  public void render() {
+    imageMode(CENTER);
+    if (img != null)
+      image(img, p.x, p.y, r * 2, r * 2);
+  }
+  
+  @Override
+  public boolean within(Point point) {
+    return true &&
+      inBoundsIncl(point.x, p.x - r, p.x + r) &&
+      inBoundsIncl(point.y, p.y - r, p.y + r);
+  }
+  
+}

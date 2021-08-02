@@ -35,3 +35,5 @@ String getClassName(Object o, String fallback) {
    return (float) (Math.log(value) / Math.log(2));
  }
  
+//Image assets to be loaded in
+PImage centerMouse;
