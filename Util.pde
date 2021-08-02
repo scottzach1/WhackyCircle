@@ -30,3 +30,8 @@ String getClassName(Object o, String fallback) {
  int randomInt(int lower, int upper) {
    return int(random(lower, upper));
  }
+
+ float log2(float value) {
+   return (float) (Math.log(value) / Math.log(2));
+ }
+ 

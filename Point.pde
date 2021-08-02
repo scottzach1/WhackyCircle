@@ -13,4 +13,13 @@ class Point {
   float distanceFrom(Point p) {
     return dist(x, y, p.x, p.y);
   }
+
+  @Override
+  public boolean equals(Object o) {
+      if (o == this) return true;
+      if (!(o instanceof Point)) return false;
+
+      Point p = (Point) o;
+      return x == p.x && p.y == y;
+  }
 }
