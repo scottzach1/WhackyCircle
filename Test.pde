@@ -49,12 +49,12 @@ abstract class Test {
    */
   public void execute() {
     preDrawSetup(); // Execture background an global changes
-    if (!playerReady) {
-      nextResult();
-      mouseCentre();
-    } else {
+    if (playerReady) {
       newResult();
       shapeShow();
+    } else {
+      nextResult();
+      mouseCentre();
     }
   }
 
