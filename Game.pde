@@ -116,6 +116,14 @@ class Game {
   private void gameCompleteState() {
     println("Game Complete :party-parrot:");
     initialize();
+    
+    TestVisitor distVisitor = new AverageDistanceFromCenter();
+    TestVisitor fittzVisitor = new TimeToClickVisitor();
+
+    for (Phase p : phases) {
+      distVisitor.acceptPhase(p);
+      fittzVisitor.acceptPhase(p);
+    }
     gameState = GameState.MAIN_MENU;
   }
 }
