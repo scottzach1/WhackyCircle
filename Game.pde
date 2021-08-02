@@ -1,8 +1,8 @@
 enum GameState {
-  MAIN_MENU,
-  HIGHSCORE,
-  RUNNING_PHASES,
-  GAME_COMPLETE
+  MAIN_MENU, 
+    HIGHSCORE, 
+    RUNNING_PHASES, 
+    GAME_COMPLETE
 }
 
 class Game {
@@ -11,37 +11,40 @@ class Game {
 
   private ArrayList<Phase>phases;
   private int phaseIndex = 0;
-  
+
   private boolean initialized;
   private ScoreKeeper score;
-  
+
   public void initialize() {
-    ui = new GameUserInterface();
-    new GameCreator().start();
+    if (ui == null)
+      ui = new GameUserInterface();
+
+    // Reset Phases
+    phaseIndex = 0;
+    Phase[] phs = { new Phase1()};
+    phases = toList(phs);
+    for (Phase ph : phases) ph.initialize();
+
+    // New Score Keeper
     score = new ScoreKeeper();
+    initialized = true;
   }
 
   class GameCreator extends Thread {
     public void run() {
-      Phase[] phs = { new Phase1()};
-
-      phases = toList(phs);
-      for (Phase ph: phases) ph.initialize();
-
-      initialized = true;
     }
   }
 
   public Phase getPhase() {
     return listGet(phases, phaseIndex, null);
   }
-  
+
   public ScoreKeeper getScore() {
     return score;
   }
 
   public void execute() {
-    switch (gameState) {
+    switch(gameState) {
     case MAIN_MENU:
       menuState();
       break;
@@ -58,7 +61,7 @@ class Game {
   }
 
   public void handleMouse(int x, int y) {
-    switch (gameState) {
+    switch(gameState) {
     case MAIN_MENU:
     case HIGHSCORE:
       gameState = ui.onClick();
@@ -66,7 +69,9 @@ class Game {
     case RUNNING_PHASES:
       try {
         getPhase().getTest().getShape().tryClick(x, y);
-      } catch(NullPointerException e) { /* No shape for user to click */ }
+      } 
+      catch(NullPointerException e) { /* No shape for user to click */
+      }
       break;
     case GAME_COMPLETE:
       gameCompleteState();
@@ -75,13 +80,13 @@ class Game {
   }
 
   private void menuState() {
-      ui.toMainMenu();
-      ui.render();
+    ui.toMainMenu();
+    ui.render();
   }
 
   private void highScoreState() {
-      ui.toHighScore();
-      ui.render();
+    ui.toHighScore();
+    ui.render();
   }
 
   private void runningState() {
@@ -106,6 +111,7 @@ class Game {
 
   private void gameCompleteState() {
     println("Game Complete :party-parrot:");
+    initialize();
     gameState = GameState.MAIN_MENU;
   }
 }

@@ -1,11 +1,16 @@
+/**
+ User interface elements are ones which are used throughout
+ menus, and not during gameplay. Gameplay elements have
+ differnt properties to user interface components.
+ */
 abstract class UserInterfaceComponent {
   protected ArrayList<UserInterfaceComponent> children;
-  
+
   UserInterfaceComponent() {
     children = new ArrayList();
     generateChildren();
   }
-  
+
   // IMPLEMENT ME!
   public abstract boolean within();
   protected abstract GameState onClick();
@@ -21,41 +26,46 @@ public float getTextSize(Point size, String str) {
   return min(minSizeW, minSizeH);
 }
 
-
+/**
+ A wrapper user interface to encompass all other menu elements. 
+ Allows for one gateway to render all pages.
+ */
 class GameUserInterface extends UserInterfaceComponent {
   private int currentChild = 0;
-  
+
   protected void generateChildren() {
     UserInterfaceComponent menu = new MainMenu();
     UserInterfaceComponent high = new HighScore();
     this.children.add(menu);
     this.children.add(high);
   }
-  
+
   public void toMainMenu() { 
     currentChild = 0;
   }
-  
+
   public void toHighScore() { 
     currentChild = 1;
   }
-  
+
   public boolean within() {
     return this.children.get(currentChild).within();
   }
-  
+
   protected GameState onClick() {
     return this.children.get(currentChild).onClick();
   }
-  
+
   public void render() { 
     this.children.get(currentChild).render();
   }
 }
 
-
+/**
+ MainMenu shows the title along with play, highscore, rules and quit buttons.
+ */
 class MainMenu extends UserInterfaceComponent {
-  
+
   protected void generateChildren() {
     Button play = new Button(new Point(width / 2, height / 2), new Point(width / 3, 75), color(145, 145, 145), color(102, 207, 255, 50), "PLAY");   
     Button score = new Button(new Point(width / 2, height / 2 + 100), new Point(width / 3, 75), color(145, 145, 145), color(102, 207, 255, 50), "HIGHSCORE");   
@@ -64,20 +74,20 @@ class MainMenu extends UserInterfaceComponent {
     this.children.add(score);
     this.children.add(quit);
   }
-  
+
   public boolean within() {
     return true;
   }
-  
+
   protected GameState onClick() {
     for (int i = 0; i < this.children.size(); ++i) {
-      if (this.children.get(i).within()){
+      if (this.children.get(i).within()) {
         return this.children.get(i).onClick();
       }
     }
     return GameState.MAIN_MENU;
   }
-  
+
   public void render() {
     background(55);
     renderTitle();
@@ -85,7 +95,7 @@ class MainMenu extends UserInterfaceComponent {
       this.children.get(i).render();
     }
   }
-  
+
   private void renderTitle() {
     textAlign(CENTER, CENTER);
     textFont(createFont("Fira Sans Condensed Bold", height / 4));
@@ -94,24 +104,26 @@ class MainMenu extends UserInterfaceComponent {
   }
 }
 
+/**
+ Highscore is used to present players with the top ten scores. 
+ */
 class HighScore extends UserInterfaceComponent {
 
-   
   protected void generateChildren() {
     //TODO: Get HighScores
     Button back = new Button(new Point(width / 2, height - 100), new Point(width / 3, 75), color(145, 145, 145), color(102, 207, 255, 50), "MAIN MENU");
     this.children.add(back);
   }
-  
+
   public boolean within() {
     return true;
   }
-  
+
   protected GameState onClick() {
     if (this.children.get(0).within()) return GameState.MAIN_MENU;
     return GameState.HIGHSCORE;
   }
-  
+
   public void render() {
     //TODO: Render HighScores
     background(55);
@@ -129,12 +141,15 @@ class HighScore extends UserInterfaceComponent {
   }
 }
 
-
+/**
+ A main component for any page, buttons are hardcoded to interact with
+ the rest of the game system.
+ */
 class Button extends UserInterfaceComponent {
   private final String text;
   private final Point pos, size;
   private final color stroke, fill;
-  
+
   Button(Point p, Point s, color stroke, color fill, String t) {
     super();
     this.pos = p;
@@ -143,27 +158,27 @@ class Button extends UserInterfaceComponent {
     this.fill = fill;
     this.text = t;
   }
-  
+
   public boolean within() {
     return true && 
-    inBoundsExcl(mouseX, pos.x - (size.x / 2), pos.x + (size.x / 2)) && 
+      inBoundsExcl(mouseX, pos.x - (size.x / 2), pos.x + (size.x / 2)) && 
       inBoundsExcl(mouseY, pos.y - (size.y / 2), pos.y + (size.y / 2));
   }
-  
-  
-  protected GameState onClick(){
+
+
+  protected GameState onClick() {
     switch (text) {
-      case "PLAY":
-        return GameState.RUNNING_PHASES;
-      case "HIGHSCORE":
-        return GameState.HIGHSCORE;
-      case "QUIT":
-        exit();
-      default :
-        return GameState.MAIN_MENU;
+    case "PLAY":
+      return GameState.RUNNING_PHASES;
+    case "HIGHSCORE":
+      return GameState.HIGHSCORE;
+    case "QUIT":
+      exit();
+    default :
+      return GameState.MAIN_MENU;
     }
   }
-  
+
   public void render() {
     color s = stroke, f = fill;
     if (within()) {
@@ -180,7 +195,7 @@ class Button extends UserInterfaceComponent {
     fill(s);
     text(text, pos.x, pos.y - 5);
   }
-  
+
   protected void generateChildren() {
     // No children for me (Leaf Node)
   }
