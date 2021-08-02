@@ -1,50 +1,57 @@
 enum GameState {
-  MAIN_MENU,
-  LOADING,
-  RUNNING_PHASES,
-  GAME_COMPLETE
+  MAIN_MENU, 
+    HIGHSCORE, 
+    RUNNING_PHASES, 
+    GAME_COMPLETE
 }
 
 class Game {
   private GameState gameState = GameState.MAIN_MENU;
+  private GameUserInterface ui;
 
   private ArrayList<Phase>phases;
   private int phaseIndex = 0;
-  
+
   private boolean initialized;
   private ScoreKeeper score;
-  
+
   public void initialize() {
-    new GameCreator().start();
+    if (ui == null)
+      ui = new GameUserInterface();
+
+    // New Score Keeper
     score = new ScoreKeeper();
+
+    // Reset Phases
+    phaseIndex = 0;
+    Phase[] phs = { new Phase1()};
+    phases = toList(phs);
+    for (Phase ph : phases) ph.initialize();
+    
+    initialized = true;
   }
 
   class GameCreator extends Thread {
     public void run() {
-      Phase[] phs = { new Phase1() };
-
-      phases = toList(phs);
-      for (Phase ph: phases) ph.initialize();
-
-      initialized = true;
+    
     }
   }
 
   public Phase getPhase() {
     return listGet(phases, phaseIndex, null);
   }
-  
+
   public ScoreKeeper getScore() {
     return score;
   }
 
   public void execute() {
-    switch (gameState) {
+    switch(gameState) {
     case MAIN_MENU:
       menuState();
       break;
-    case LOADING:
-      loadingState();
+    case HIGHSCORE:
+      highScoreState();
       break;
     case RUNNING_PHASES:
       runningState();
@@ -56,16 +63,17 @@ class Game {
   }
 
   public void handleMouse(int x, int y) {
-    switch (gameState) {
+    switch(gameState) {
     case MAIN_MENU:
-      gameState = GameState.RUNNING_PHASES;
-      break;
-    case LOADING:
+    case HIGHSCORE:
+      gameState = ui.onClick();
       break;
     case RUNNING_PHASES:
       try {
         getPhase().getTest().getShape().tryClick(x, y);
-      } catch(NullPointerException e) { /* No shape for user to click */ }
+      } 
+      catch(NullPointerException e) { /* No shape for user to click */
+      }
       break;
     case GAME_COMPLETE:
       gameCompleteState();
@@ -73,10 +81,14 @@ class Game {
     }
   }
 
-  private void menuState() {}
-  private void loadingState() {
-    initialize();
-    gameState = GameState.RUNNING_PHASES;
+  private void menuState() {
+    ui.toMainMenu();
+    ui.render();
+  }
+
+  private void highScoreState() {
+    ui.toHighScore();
+    ui.render();
   }
 
   private void runningState() {
@@ -101,6 +113,7 @@ class Game {
 
   private void gameCompleteState() {
     println("Game Complete :party-parrot:");
+    initialize();
     
     TestVisitor distVisitor = new AverageDistanceFromCenter();
     TestVisitor fittzVisitor = new TimeToClickVisitor();
@@ -109,7 +122,6 @@ class Game {
       distVisitor.acceptPhase(p);
       fittzVisitor.acceptPhase(p);
     }
-    
     gameState = GameState.MAIN_MENU;
   }
 }

@@ -76,16 +76,17 @@ class ShapeBuilder {
     int centreY = height / 2;
 
     int radius = randomInt(lowerRadius, upperRadius);
-    int x = centreX, y = centreY; // temp invalid values.
+    int x, y; // temp invalid values.
 
-    while (
-      // None or either but not both are valid.
-      inBoundsExcl(x, centreX - centreSize - radius, centreX + centreSize + radius) && 
-      inBoundsExcl(y, centreY - centreSize - radius, centreY + centreSize + radius)
-    ) {
+    do  {
       x = randomInt(radius, width - radius);
       y = randomInt(radius, height - radius);
-    }
+    } while (
+      // None or either but not both are valid.
+      (inBoundsExcl(x, centreX - centreSize - radius, centreX + centreSize + radius) && 
+      inBoundsExcl(y, centreY - centreSize - radius, centreY + centreSize + radius)) || 
+      game.getScore().outsideScoreBox(x, y, radius)
+    );
 
     Shape s;
     switch (st) {
