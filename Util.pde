@@ -30,3 +30,6 @@ String getClassName(Object o, String fallback) {
  int randomInt(int lower, int upper) {
    return int(random(lower, upper));
  }
+
+//Image assets to be loaded in
+PImage centerMouse;

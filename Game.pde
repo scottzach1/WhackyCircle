@@ -18,6 +18,8 @@ class Game {
   public void initialize() {
     if (ui == null)
       ui = new GameUserInterface();
+      
+    new AssetLoader().start();
 
     // New Score Keeper
     score = new ScoreKeeper();
@@ -31,8 +33,9 @@ class Game {
     initialized = true;
   }
 
-  class GameCreator extends Thread {
+  class AssetLoader extends Thread {
     public void run() {
+      centerMouse = loadImage("cm.jpg");
     }
   }
 
