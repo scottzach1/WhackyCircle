@@ -1,6 +1,7 @@
 class ScoreKeeper{
   private int overallScore;
   private int phaseScore;
+  private ArrayList<Integer> phaseScores = new ArrayList();
   
   ScoreKeeper() {
     overallScore = 0;
@@ -23,6 +24,11 @@ class ScoreKeeper{
   }
   
   public void resetPhase(){
+    phaseScores.add(phaseScore);
     phaseScore = 0;
+  }
+
+  public ArrayList<Integer> getPhaseScores() {
+    return new ArrayList(phaseScores);
   }
 }
