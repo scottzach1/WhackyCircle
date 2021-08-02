@@ -18,6 +18,8 @@ class Game {
   public void initialize() {
     if (ui == null)
       ui = new GameUserInterface();
+      
+    new AssetLoader().start();
 
     // New Score Keeper
     score = new ScoreKeeper();
@@ -31,9 +33,9 @@ class Game {
     initialized = true;
   }
 
-  class GameCreator extends Thread {
+  class AssetLoader extends Thread {
     public void run() {
-    
+      centerMouse = loadImage("cm.jpg");
     }
   }
 
@@ -113,7 +115,6 @@ class Game {
 
   private void gameCompleteState() {
     println("Game Complete :party-parrot:");
-    initialize();
     
     TestVisitor distVisitor = new AverageDistanceFromCenter();
     TestVisitor fittzVisitor = new TimeToClickVisitor();
@@ -122,6 +123,8 @@ class Game {
       distVisitor.acceptPhase(p);
       fittzVisitor.acceptPhase(p);
     }
+
+    initialize();
     gameState = GameState.MAIN_MENU;
   }
 }

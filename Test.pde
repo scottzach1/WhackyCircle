@@ -63,7 +63,8 @@ abstract class Test {
    * TODO: Display count down timer
    */
   private void mouseCentre() {
-    Shape centreShape = new Square(width / 2, height / 2, CENTRE_SIZE);
+    // Shape centreShape = new Square(width / 2, height / 2, CENTRE_SIZE);
+    Shape centreShape = new Image(centerMouse, width / 2, height / 2, CENTRE_SIZE);
     centreShape.render();
 
     if (!centreShape.within(mouseX, mouseY)) {
@@ -74,8 +75,8 @@ abstract class Test {
     // Check if been in square > CENTER_HOLD_SECS seconds.
 
     if ((millis() - centreSince) > (CENTER_HOLD_SECS * 1000)) {
-      playerReady = true;
       newResult();
+      playerReady = true;
     }
   }
 
@@ -121,14 +122,12 @@ abstract class Test {
   private void nextResult() {
     if (resultIndex < results.size()) {
       results.get(resultIndex).setPath();
-      println("results" + resultIndex);
-      println(results);
       resultIndex++;
     }
   }
 
   public ArrayList<Result> getResults() {
-    return new ArrayList(this.results); // Encapsulate results
+    return new ArrayList(results); // Encapsulate results
   }
 
   // immutable
