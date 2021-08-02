@@ -24,6 +24,10 @@ abstract class Phase {
   public Test getTest() {
     return listGet(tests, testIndex, null);
   }
+
+  public ArrayList<Test> getTests(){
+    return new ArrayList(tests);
+  }
   
   public void initialize() { // Implement for each phase
     println("WARN: " + getClassName(this, "Phase") + " Init Unimplemented");
@@ -33,7 +37,7 @@ abstract class Phase {
 class Phase1 extends Phase {
   
   public void initialize() {
-    Test[] ts = {new Test1(), new Test1()};
+    Test[] ts = {new Test1()};
     
     this.tests = toList(ts);
     

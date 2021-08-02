@@ -21,7 +21,7 @@ class Game {
 
   class GameCreator extends Thread {
     public void run() {
-      Phase[] phs = { new Phase1(), new Phase1() };
+      Phase[] phs = { new Phase1()};
 
       phases = toList(phs);
       for (Phase ph: phases) ph.initialize();
