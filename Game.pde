@@ -21,7 +21,7 @@ class Game {
 
   class GameCreator extends Thread {
     public void run() {
-      Phase[] phs = { new Phase1()};
+      Phase[] phs = { new Phase1() };
 
       phases = toList(phs);
       for (Phase ph: phases) ph.initialize();
@@ -101,6 +101,15 @@ class Game {
 
   private void gameCompleteState() {
     println("Game Complete :party-parrot:");
+    
+    TestVisitor distVisitor = new AverageDistanceFromCenter();
+    TestVisitor fittzVisitor = new TimeToClickVisitor();
+
+    for (Phase p : phases) {
+      distVisitor.acceptPhase(p);
+      fittzVisitor.acceptPhase(p);
+    }
+    
     gameState = GameState.MAIN_MENU;
   }
 }

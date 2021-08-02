@@ -25,6 +25,8 @@ abstract class Test {
     this.initialize(); // Method to generate shapes for this test.
   }
 
+  public abstract void accept(TestVisitor visitor); 
+
   // Implement in solid classes
   public void initialize() {
     println("WARN: " + getClassName(this, "Test") + " Init Unimplemented");
@@ -50,10 +52,8 @@ abstract class Test {
   public void execute() {
     preDrawSetup(); // Execture background an global changes
     if (playerReady) {
-      newResult();
       shapeShow();
     } else {
-      nextResult();
       mouseCentre();
     }
   }
@@ -71,10 +71,11 @@ abstract class Test {
     }
 
     centreSince = Math.min(centreSince, millis());
-
     // Check if been in square > CENTER_HOLD_SECS seconds.
+
     if ((millis() - centreSince) > (CENTER_HOLD_SECS * 1000)) {
       playerReady = true;
+      newResult();
     }
   }
 
@@ -83,7 +84,6 @@ abstract class Test {
    */
   private void shapeShow() {
     if (completedShapes()) return;
-
     Shape s = getShape();
 
     if (s == null) {
@@ -94,6 +94,7 @@ abstract class Test {
     s.render();
 
     if (s.hasBeenClicked()) {
+      nextResult();
       playerReady = false;
       ++shapeIndex;
       game.getScore().updateScore(1); //TODO (Harri) update proportionate to TimeToClick
@@ -120,10 +121,11 @@ abstract class Test {
   private void nextResult() {
     if (resultIndex < results.size()) {
       results.get(resultIndex).setPath();
+      println("results" + resultIndex);
+      println(results);
       resultIndex++;
     }
   }
-
 
   public ArrayList<Result> getResults() {
     return new ArrayList(this.results); // Encapsulate results
@@ -145,6 +147,10 @@ abstract class Test {
       path = pt.stop();
     }
 
+    public Point getStartingMouse() {
+      return mouse;
+    }
+
     public float getDist(){
       return mouse.distanceFrom(shape.p);
     }
@@ -156,9 +162,34 @@ abstract class Test {
     public ArrayList<Pair<Long, Point>> getPath(){
       return new ArrayList(path);
     }
+
+    float timeToClick() {
+      long startTimestamp = path.get(0).left;
+      Point startPoint = path.get(0).right;
+
+      long endTimestamp = path.get(path.size() - 1).left;
+      Point endPoint = path.get(path.size() - 1).right;
+
+      long actionTimestamp = Long.MAX_VALUE;
+
+      for (Pair<Long, Point> pair : path) {
+          // get the first timestamp the point changed.
+          if (startPoint.equals(pair.right)) {
+              actionTimestamp = Math.min(pair.left, actionTimestamp);
+          }
+      }
+
+      float responseTime = (float) actionTimestamp - startTimestamp;
+      float actionTime = (float) endTimestamp - actionTimestamp;
+
+      float distanceToTarget = getDist();
+      float widthOfTarget = float(shape.r);
+
+      float timeToClick = responseTime + actionTime * log2(1 + distanceToTarget / widthOfTarget);
+      return timeToClick / 1000; // get seconds
+    }
   }
 }
-// processing-core-PApplet
 
 ShapeBuilder builder = new ShapeBuilder();
 
@@ -171,5 +202,23 @@ class Test1 extends Test {
 
   // Implement in solid classes  
   protected void preDrawSetup() {
+  }
+
+  public void accept(TestVisitor visitor) {
+    visitor.acceptTest1(this);
+  }
+}
+
+class Test2 extends Test {
+  // TODO(any): Implement Me
+  public void accept(TestVisitor visitor) {
+    visitor.acceptTest2(this);
+  }
+}
+
+class Test3 extends Test {
+  // TODO(any): Implement Me
+  public void accept(TestVisitor visitor) {
+    visitor.acceptTest3(this);
   }
 }
