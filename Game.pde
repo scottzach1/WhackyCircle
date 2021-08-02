@@ -12,9 +12,11 @@ class Game {
   private int phaseIndex = 0;
   
   private boolean initialized;
-
+  private ScoreKeeper score;
+  
   public void initialize() {
     new GameCreator().start();
+    score = new ScoreKeeper();
   }
 
   class GameCreator extends Thread {
@@ -30,6 +32,10 @@ class Game {
 
   public Phase getPhase() {
     return listGet(phases, phaseIndex, null);
+  }
+  
+  public ScoreKeeper getScore() {
+    return score;
   }
 
   public void execute() {
@@ -84,8 +90,12 @@ class Game {
     }
 
     p.execute();
+    score.displayScore();
 
-    if (p.completedTests()) ++phaseIndex;
+    if (p.completedTests()) {
+      ++phaseIndex;
+      score.resetPhase();
+    }
     if (phaseIndex == phases.size()) gameState = GameState.GAME_COMPLETE;
   }
 

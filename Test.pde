@@ -14,7 +14,7 @@ abstract class Test {
   protected ArrayList<Result> results;
   
   private int shapeIndex = 0;
-
+  
   private long centreSince = Long.MAX_VALUE;
   private boolean playerReady = false; // TODO(lckrist): back to false when not testing
   
@@ -93,6 +93,7 @@ abstract class Test {
     if (s.hasBeenClicked()) {
       playerReady = false;
       ++shapeIndex;
+      game.getScore().updateScore(1); //TODO (Harri) update proportionate to TimeToClick
     }
   }
   
