@@ -14,14 +14,14 @@ abstract class Shape {
   }
   
   public abstract void render();
-  public abstract boolean within(Point mouse);
+  public abstract boolean within(Point point);
 
   public boolean within(int x, int y) {
     return within(new Point(x, y));
   }
 
-  public boolean tryClick(Point mouse) {
-    return (hasBeenClicked = within(mouse));
+  public boolean tryClick(Point point) {
+    return (hasBeenClicked = within(point));
   }
 
   public boolean tryClick(int x, int y) {
@@ -54,8 +54,8 @@ class Circle extends Shape {
   }
   
   @Override
-  public boolean within(Point mouse) {
-    return p.distanceFrom(mouse) < r;
+  public boolean within(Point point) {
+    return p.distanceFrom(point) < r;
   }
 }
 
@@ -76,9 +76,9 @@ class Square extends Shape {
   }
   
   @Override
-  public boolean within(Point mouse) {
+  public boolean within(Point point) {
     return true &&
-      inBoundsExcl(mouse.x, p.x - r, p.x + r) &&
-      inBoundsExcl(mouse.y, p.y - r, p.y + r);
+      inBoundsIncl(point.x, p.x - r, p.x + r) &&
+      inBoundsIncl(point.y, p.y - r, p.y + r);
   }
 }

@@ -1,12 +1,13 @@
 enum GameState {
   MAIN_MENU,
-  LOADING,
+  HIGHSCORE,
   RUNNING_PHASES,
   GAME_COMPLETE
 }
 
 class Game {
   private GameState gameState = GameState.MAIN_MENU;
+  private GameUserInterface ui;
 
   private ArrayList<Phase>phases;
   private int phaseIndex = 0;
@@ -15,6 +16,7 @@ class Game {
   private ScoreKeeper score;
   
   public void initialize() {
+    ui = new GameUserInterface();
     new GameCreator().start();
     score = new ScoreKeeper();
   }
@@ -43,8 +45,8 @@ class Game {
     case MAIN_MENU:
       menuState();
       break;
-    case LOADING:
-      loadingState();
+    case HIGHSCORE:
+      highScoreState();
       break;
     case RUNNING_PHASES:
       runningState();
@@ -58,9 +60,8 @@ class Game {
   public void handleMouse(int x, int y) {
     switch (gameState) {
     case MAIN_MENU:
-      gameState = GameState.RUNNING_PHASES;
-      break;
-    case LOADING:
+    case HIGHSCORE:
+      gameState = ui.onClick();
       break;
     case RUNNING_PHASES:
       try {
@@ -73,10 +74,14 @@ class Game {
     }
   }
 
-  private void menuState() {}
-  private void loadingState() {
-    initialize();
-    gameState = GameState.RUNNING_PHASES;
+  private void menuState() {
+      ui.toMainMenu();
+      ui.render();
+  }
+
+  private void highScoreState() {
+      ui.toHighScore();
+      ui.render();
   }
 
   private void runningState() {

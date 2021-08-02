@@ -63,7 +63,7 @@ abstract class Test {
    * TODO: Display count down timer
    */
   private void mouseCentre() {
-    Shape centreShape = new Square(width / 2 - CENTRE_SIZE, height / 2 - CENTRE_SIZE, CENTRE_SIZE);
+    Shape centreShape = new Square(width / 2, height / 2, CENTRE_SIZE);
     centreShape.render();
 
     if (!centreShape.within(mouseX, mouseY)) {
