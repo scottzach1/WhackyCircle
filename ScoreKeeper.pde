@@ -28,7 +28,7 @@ class ScoreKeeper{
     textAlign(CORNER);
     textFont(createFont("Fira Sans Condensed Bold", fontSize));
     text("Game Score:   " + overallScore, rectL + 10, rectT + (fontSize + 10));
-    text("Phase Score:  " + phaseScore, rectL + 10, rectT + (fontSize + 10) * 2);
+    text("Phase Score:  " + phaseScore, rectL + 10, rectT + (fontSize + 10) * 2); // *2 because second line.
     fill(210);
   }
   
