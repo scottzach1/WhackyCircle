@@ -3,6 +3,14 @@ class ScoreKeeper{
   private int phaseScore;
   private ArrayList<Integer> phaseScores = new ArrayList();
   
+  // Helpers for bounding box
+  // Everything bases on font size
+  private float fontSize = 35;
+  private float rectW = fontSize * 8;
+  private float rectH = fontSize * 3;
+  private float rectL = width - rectW - 20;
+  private float rectT = 20;
+  
   ScoreKeeper() {
     overallScore = 0;
     phaseScore = 0;
@@ -10,12 +18,18 @@ class ScoreKeeper{
   
   public void displayScore() {
     rectMode(CORNER);
-    rect(5, 5, 120, 50, 10, 10, 10, 10);
-
-    fill(0);
-    text("Game Score: " + overallScore, 20, 20);
-    text("Phase Score: " + phaseScore, 20, 40);
-    fill(255);
+    fill(175);
+    stroke(245);
+    strokeWeight(5);
+    rect(rectL, rectT, rectW, rectH, 10, 2, 10, 10);
+    noStroke();
+    
+    fill(75);
+    textAlign(CORNER);
+    textFont(createFont("Fira Sans Condensed Bold", fontSize));
+    text("Game Score:   " + overallScore, rectL + 10, rectT + (fontSize + 10));
+    text("Phase Score:  " + phaseScore, rectL + 10, rectT + (fontSize + 10) * 2);
+    fill(210);
   }
   
   public void updateScore(int update) {
@@ -23,11 +37,15 @@ class ScoreKeeper{
     overallScore += update;
   }
   
-  public void resetPhase(){
+  public void resetPhase() {
     phaseScores.add(phaseScore);
     phaseScore = 0;
   }
 
+  public boolean outsideScoreBox(int sx, int sy, int r){
+    return (sx + r > rectL) && (sy - r < rectT + rectH);
+  }
+  
   public ArrayList<Integer> getPhaseScores() {
     return new ArrayList(phaseScores);
   }

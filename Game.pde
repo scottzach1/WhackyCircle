@@ -19,14 +19,15 @@ class Game {
     if (ui == null)
       ui = new GameUserInterface();
 
+    // New Score Keeper
+    score = new ScoreKeeper();
+
     // Reset Phases
     phaseIndex = 0;
     Phase[] phs = { new Phase1()};
     phases = toList(phs);
     for (Phase ph : phases) ph.initialize();
-
-    // New Score Keeper
-    score = new ScoreKeeper();
+    
     initialized = true;
   }
 
