@@ -124,6 +124,7 @@ class Game {
       fittzVisitor.acceptPhase(p);
     }
 
+    UUID gameId = saveGamePaths(phases);
     initialize();
     gameState = GameState.MAIN_MENU;
   }
