@@ -3,6 +3,10 @@ class ScoreEntry {
     public final int score;
     public final long timestamp;
 
+    public ScoreEntry(String name, int score) {
+        this(name, score, System.currentTimeMillis());
+    }
+
     public ScoreEntry(String name, int score, long timestamp) {
         this.name = name;
         this.score = score;
