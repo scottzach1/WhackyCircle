@@ -102,13 +102,16 @@ UUID saveGamePaths(ArrayList<Phase> phases, UUID gameId) {
     Table table = new Table();
 
     table.addColumn("gameId", Table.STRING);
-    table.addColumn("path", Table.INT);
+    table.addColumn("phase", Table.INT);
     table.addColumn("result", Table.INT);
+    table.addColumn("path", Table.INT);
     table.addColumn("timestamp", Table.STRING);
     table.addColumn("mouseX", Table.INT);
     table.addColumn("mouseY", Table.INT);
 
+    int phaseId = -1;
     for (Phase phase : phases) {
+        ++phaseId;
         for (Test test : phase.getTests()) {
             int resultId = -1;
             for (Test.Result result : test.getResults()) {
@@ -122,8 +125,9 @@ UUID saveGamePaths(ArrayList<Phase> phases, UUID gameId) {
                     TableRow row = table.addRow();
 
                     row.setString("gameId", gameId.toString());
-                    row.setInt("path", pathId);
+                    row.setInt("phase", pathId);
                     row.setInt("result", resultId);
+                    row.setInt("path", pathId);
                     row.setString("timestamp", String.valueOf(t));
                     row.setInt("mouseX", p.x);
                     row.setInt("mouseY", p.y);
