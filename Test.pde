@@ -29,7 +29,7 @@ abstract class Test {
     this.initialize(); // Method to generate shapes for this test.
   }
 
-  public abstract void accept(TestVisitor visitor); 
+  public abstract Long accept(TestVisitor visitor); 
 
   // Implement in solid classes
   public void initialize() {
@@ -174,30 +174,41 @@ abstract class Test {
       return new ArrayList(path);
     }
 
-    float timeToClick() {
+    long getActionTimestamp() {
       long startTimestamp = path.get(0).left;
       Point startPoint = path.get(0).right;
+      
+      long actionTimestamp = 0L;
 
-      long endTimestamp = path.get(path.size() - 1).left;
-      Point endPoint = path.get(path.size() - 1).right;
-
-      long actionTimestamp = Long.MAX_VALUE;
-
+      int i = 0;
       for (Pair<Long, Point> pair : path) {
+          ++i;
           // get the first timestamp the point changed.
           if (startPoint.equals(pair.right)) {
-              actionTimestamp = Math.min(pair.left, actionTimestamp);
+              actionTimestamp = Math.max(pair.left, actionTimestamp);
           }
       }
 
-      float responseTime = (float) actionTimestamp - startTimestamp;
-      float actionTime = (float) endTimestamp - actionTimestamp;
+      return actionTimestamp;
+    }
 
+    long getResponseTime() {
+      long startTimestamp = path.get(0).left;
+
+      return getActionTimestamp() - startTimestamp;
+    }
+
+    long getActionTime() {
+      long endTimestamp = path.get(path.size() - 1).left;
+
+      return endTimestamp - getActionTimestamp();
+    }
+
+    long getFittz() {
       float distanceToTarget = getDist();
       float widthOfTarget = float(shape.r);
-
-      float timeToClick = responseTime + actionTime * log2(1 + distanceToTarget / widthOfTarget);
-      return timeToClick / 1000; // get seconds
+      
+      return getResponseTime() + getActionTime() * (log2(1 + (long) (distanceToTarget / widthOfTarget)));
     }
   }
 }
@@ -215,12 +226,13 @@ class Test1 extends Test {
   protected void preDrawSetup() {
   }
 
-  public void accept(TestVisitor visitor) {
-    visitor.acceptTest1(this);
+  public Long accept(TestVisitor visitor) {
+    return visitor.acceptTest(this);
   }
 }
 
 class Test2 extends Test {
+
   // Implement in solid classes
   public void initialize() {
     this.shapes = builder.addType(ShapeType.CIRCLE).times(5).toList();
@@ -230,12 +242,13 @@ class Test2 extends Test {
   protected void preDrawSetup() {
   }
 
-  public void accept(TestVisitor visitor) {
-    visitor.acceptTest2(this);
+  public Long accept(TestVisitor visitor) {
+    return visitor.acceptTest(this);
   }
 }
 
 class Test3 extends Test {
+
     // Implement in solid classes
   public void initialize() {
     this.shapes = builder.addTypes(ShapeType.values()).times(5).toList();
@@ -245,8 +258,8 @@ class Test3 extends Test {
   protected void preDrawSetup() {
   }
 
-  public void accept(TestVisitor visitor) {
-    visitor.acceptTest3(this);
+  public Long accept(TestVisitor visitor) {
+    return visitor.acceptTest(this);
   }
 }
 
@@ -289,7 +302,7 @@ class Test4 extends Test {
    fill(210);
   }
 
-  public void accept(TestVisitor visitor) {
-    visitor.acceptTest4(this);
+   public Long accept(TestVisitor visitor) {
+    return visitor.acceptTest(this);
   }
 }

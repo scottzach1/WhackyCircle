@@ -1,8 +1,8 @@
 enum GameState {
-  MAIN_MENU, 
-  RULES, 
-  HIGHSCORE, 
-  RUNNING_PHASES, 
+  MAIN_MENU,
+  RULES,
+  HIGHSCORE,
+  RUNNING_PHASES,
   GAME_COMPLETE
 }
 
@@ -10,14 +10,14 @@ class Game {
   private GameState gameState = GameState.MAIN_MENU;
   private GameUserInterface ui;
 
-  private ArrayList<Phase>phases;
+  private ArrayList < Phase > phases;
   private int phaseIndex = 0;
 
   private boolean initialized;
   private ScoreKeeper score;
 
-  public void initialize() { 
-    if (ui == null)     
+  public void initialize() {
+    if (ui == null)
       ui = new GameUserInterface();
     new AssetLoader().start();
 
@@ -28,7 +28,7 @@ class Game {
     phaseIndex = 0;
     Phase[] phs = {new Phase1(), new Phase2(), new Phase3(), new Phase4()};
     phases = toList(phs);
-    for (Phase ph : phases) ph.initialize();
+    for (Phase ph: phases) ph.initialize();
 
     initialized = true;
   }
@@ -49,7 +49,7 @@ class Game {
   }
 
   public void execute() {
-    switch(gameState) {
+    switch (gameState) {
     case MAIN_MENU:
       menuState();
       break;
@@ -69,7 +69,7 @@ class Game {
   }
 
   public void handleMouseClick(int x, int y) {
-    switch(gameState) {
+    switch (gameState) {
     case MAIN_MENU:
     case RULES:
     case HIGHSCORE:
@@ -78,8 +78,8 @@ class Game {
     case RUNNING_PHASES:
       try {
         getPhase().getTest().getShape().tryClick(x, y);
-      } 
-      catch(NullPointerException e) { /* No shape for user to click */
+      } catch (NullPointerException e) {
+        /* No shape for user to click */
       }
       break;
     case GAME_COMPLETE:
@@ -129,17 +129,41 @@ class Game {
 
   private void gameCompleteState() {
     println("Game Complete :party-parrot:");
-
-    TestVisitor distVisitor = new AverageDistanceFromCenter();
-    TestVisitor fittzVisitor = new TimeToClickVisitor();
-
-    for (Phase p : phases) {
-      distVisitor.acceptPhase(p);
-      fittzVisitor.acceptPhase(p);
-    }
-
-    UUID gameId = saveGamePaths(phases);
+    saveMetrics();
     initialize();
     gameState = GameState.MAIN_MENU;
+  }
+
+  private void saveMetrics() {
+    TestVisitor[] visitors = {
+      new AverageDistanceFromCenter(),
+      new FittzVisitor(),
+      new ResponseTimeVisitor(),
+      new ActionTimeVisitor(),
+      new TimeToClickVisitor()
+    };
+
+    UUID uuid = UUID.randomUUID();
+
+    ArrayList < MetricRow > metrics = new ArrayList();
+
+    int phaseId = -1;
+    for (Phase p: phases) {
+      MetricRow metric = new MetricRow("zaci", ++phaseId, uuid);
+
+      for (TestVisitor v: visitors) {
+        String metricKey = v.metricKey();
+        
+        long averageValue = 0L;
+        for (Test t: p.getTests()) averageValue += t.accept(v);
+        averageValue = averageValue / (long) p.getTests().size();
+
+        metric.metrics.put(metricKey, averageValue);
+      }
+      metrics.add(metric);
+    }
+
+    saveMetricsToFile(metrics, uuid, "zaci");
+    saveGamePaths(phases, uuid, "zaci");
   }
 }
