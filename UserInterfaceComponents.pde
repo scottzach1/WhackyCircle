@@ -3,11 +3,11 @@
  menus, and not during gameplay. Gameplay elements have
  differnt properties to user interface components.
  */
+final String FONT =  "FiraSansCondensed-Bold.ttf";
+final String FONT_SMALL =  "FiraSansCondensed-Light.ttf";
 abstract class UserInterfaceComponent {
   public String userName = "";
   protected ArrayList<UserInterfaceComponent> children;
-  protected final String FONT =  "FiraSansCondensed-Bold.ttf";
-  protected final String FONT_SMALL =  "FiraSansCondensed-Light.ttf";
 
   UserInterfaceComponent() {
     children = new ArrayList();
@@ -346,9 +346,15 @@ class FinalGameScreen extends UserInterfaceComponent {
   }
 
   protected void onKey(Character c) {
-    if (c == '`') {if (cs.size() == 3) {game.gameState = GameState.GAME_COMPLETE;}}
-    else if (c == '-') {cs.remove(cs.size() - 1);}
-    else if (cs.size() <= 3) {cs.add(c);}
+    if (c == '`') {
+      if (cs.size() == 3) {
+        game.gameState = GameState.GAME_COMPLETE;
+      }
+    } else if (c == '-') {
+      cs.remove(cs.size() - 1);
+    } else if (cs.size() <= 3) {
+      cs.add(c);
+    }
   }
 
   public void render() {
@@ -371,22 +377,22 @@ class FinalGameScreen extends UserInterfaceComponent {
     text("FINISHED", width / 2, 100);
   }
 
-  private void renderDots(){
+  private void renderDots() {
     textAlign(CENTER, CENTER);
     textFont(createFont(FONT, height / 4));
     fill(0);
     String str = "";
-    for (int i = 0; i < dots; ++i){
+    for (int i = 0; i < dots; ++i) {
       str += ".";
     }
-    if (millis() - lastDot > 1000){
+    if (millis() - lastDot > 1000) {
       dots = (dots + 1) % 5;
       lastDot = millis();
     }
     text(str, width / 2, height / 2);
   }
 
-  private void renderChars(){
+  private void renderChars() {
     textAlign(CENTER, CENTER);
     textFont(createFont(FONT_SMALL, height / 8));
     fill(0);
@@ -397,12 +403,12 @@ class FinalGameScreen extends UserInterfaceComponent {
     fill(100);
     rectMode(CENTER);
     textFont(createFont(FONT, rectSize));
-    for(int i = 0; i < 3; i++){
+    for (int i = 0; i < 3; i++) {
       int x = width / 2 + ((rectSize + 30) * (i-1));
       int y = height*2/3;
       fill(100);
       rect(x, y, rectSize, rectSize);
-      if(i < cs.size()){
+      if (i < cs.size()) {
         fill(0);
         text(cs.get(i) + "", x, y - 10);
       }
