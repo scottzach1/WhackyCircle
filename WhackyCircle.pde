@@ -1,5 +1,6 @@
 PathTracker pt = new PathTracker();
 Game game = new Game();
+ScoreBoard sb;
 
 
 void settings() {
@@ -12,8 +13,7 @@ void setup() {
   surface.setResizable(true);
   game.initialize();
 
-  ScoreBoard scores = importScoreBoard();
-  scores.save();
+  sb = importScoreBoard();
 
   ArrayList<MetricRow> metrics = loadMetrics("metrics.csv");
   saveMetrics(metrics);

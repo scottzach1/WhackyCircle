@@ -40,31 +40,32 @@ class ScoreBoard {
 
         int userIndex = -1;
         for (int i=0; i<highScores.size(); ++i) {
-            if (highScores.get(i).name != score.name) continue;
-
-            userIndex = i;
-            break;
-        }
-
-        if (userIndex != -1) {
-            if (score.score > highScores.get(userIndex).score) 
-                highScores.remove(userIndex);
-            else return false;
-        }
-        
-        boolean added = false;
-        for (int i=0; i<highScores.size()-1; ++i) {
-            ScoreEntry entry = highScores.get(i);
-            ScoreEntry entry2 = highScores.get(i+1);
-            
-            if (inBoundsIncl(score.score, entry.score, entry2.score)) {
-                highScores.add(i + 1, score);
-                added = true;
+            if (highScores.get(i).name.equals(score.name)) {
+                userIndex = i;
                 break;
             }
         }
 
-        if (added && highScores.size() < 10) highScores.add(score);
+        if (userIndex > -1) {
+            if (score.score > highScores.get(userIndex).score) 
+                highScores.remove(userIndex);
+            else return false;
+        }
+
+        int scoreIndex = -1;
+        for (int i=0; i<highScores.size(); ++i) {
+            if (score.score > highScores.get(i).score) {
+                scoreIndex = i;
+                break;
+            }
+        }
+
+        boolean added = true;
+        if (scoreIndex != -1) {
+            highScores.add(scoreIndex, score);
+        } else if (highScores.size() < 10) {
+            highScores.add(score);
+        } else added = false;
 
         while (highScores.size() > 10) highScores.remove(highScores.size() - 1);
         return added;
@@ -78,5 +79,3 @@ class ScoreBoard {
         saveJSONObject(scoreBoardToJson(this), "data/" + filename) ;
     }
 }
-
-ScoreBoard scoreboard = importScoreBoard();

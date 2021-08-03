@@ -142,4 +142,3 @@ class Game {
           gameState = GameState.MAIN_MENU;
         }
         }
-          
