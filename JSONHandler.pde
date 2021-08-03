@@ -1,32 +1,3 @@
-class ScoreEntry {
-    public final String name;
-    public final int score;
-    public final long timestamp;
-
-    public ScoreEntry(String name, int score) {
-        this(name, score, System.currentTimeMillis());
-    }
-
-    public ScoreEntry(String name, int score, long timestamp) {
-        this.name = name;
-        this.score = score;
-        this.timestamp = timestamp;
-    }
-
-    public JSONObject toJson() {
-        JSONObject json = new JSONObject();
-        json.setString("name", this.name);
-        json.setInt("score", this.score);
-        json.setString("timestamp", String.valueOf(this.timestamp)); // no setDouble() :<
-        return json;
-    }
-
-    @Override
-    public String toString() {
-        return "{name=" + name + ", score=" + score + ", timestamp=" + timestamp + "}";
-    }
-}
-
 /**
  * EW... I hate this, I hate that Processing can't have class methods (because everything is an
  * inner class of the global PApplet class behind the scenes... YUCK!!!)
@@ -44,6 +15,28 @@ ScoreEntry scoreEntryFromJson(JSONObject json) {
     );
 }
 
+public JSONObject scoreEntryToJson(ScoreEntry s) {
+    JSONObject json = new JSONObject();
+    json.setString("name", s.name);
+    json.setInt("score", s.score);
+    json.setString("timestamp", String.valueOf(s.timestamp)); // no setDouble() :<
+    return json;
+}
+
+JSONObject scoreBoardToJson(ScoreBoard s) {
+    JSONArray jsonHighScores = new JSONArray();
+    for (int i=0; i<s.highScores.size(); ++i) jsonHighScores.setJSONObject(i, s.highScores.get(i).toJson());
+
+    JSONArray jsonAllScores = new JSONArray();
+    for (int i=0; i<s.allScores.size(); ++i) jsonAllScores.setJSONObject(i, s.allScores.get(i).toJson());
+
+    JSONObject json = new JSONObject();
+    json.setJSONArray("highScores", jsonHighScores);
+    json.setJSONArray("allScores", jsonAllScores);
+    return json;
+}
+
+
 ScoreBoard scoreBoardFromJson(JSONObject json) {
     if (json == null) {
         println("ScoreBoard was of invalid JSON syntax, received NULL.");
@@ -60,42 +53,6 @@ ScoreBoard scoreBoardFromJson(JSONObject json) {
     for (int i=0; i<jsonAllScores.size(); ++i) allScores.add(scoreEntryFromJson(jsonAllScores.getJSONObject(i)));
 
     return new ScoreBoard(highScores, allScores);
-}
-
-class ScoreBoard {
-    ArrayList<ScoreEntry> highScores = new ArrayList();
-    ArrayList<ScoreEntry> allScores = new ArrayList();
-
-    ScoreBoard() {
-        this.highScores = new ArrayList();
-        this.allScores = new ArrayList();
-    }
-
-    ScoreBoard(ArrayList<ScoreEntry> highScores, ArrayList<ScoreEntry> allScores) {
-        this.highScores = highScores;
-        this.allScores = allScores;
-    }
-
-    JSONObject toJson() {
-        JSONArray jsonHighScores = new JSONArray();
-        for (int i=0; i<highScores.size(); ++i) jsonHighScores.setJSONObject(i, highScores.get(i).toJson());
-
-        JSONArray jsonAllScores = new JSONArray();
-        for (int i=0; i<allScores.size(); ++i) jsonAllScores.setJSONObject(i, allScores.get(i).toJson());
-
-        JSONObject json = new JSONObject();
-        json.setJSONArray("highScores", jsonHighScores);
-        json.setJSONArray("allScores", jsonAllScores);
-        return json;
-    }
-
-    void export() {
-        export("scoreboard.json");
-    }
-
-    void export(String filename) {
-        saveJSONObject(this.toJson(), "data/" + filename) ;
-    }
 }
 
 ScoreBoard importScoreBoard() {
