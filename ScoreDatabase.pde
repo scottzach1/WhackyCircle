@@ -79,4 +79,4 @@ class ScoreBoard {
     }
 }
 
-ScoreBoard scoreboard;
+ScoreBoard scoreboard = importScoreBoard();

@@ -104,4 +104,4 @@ class ShapeBuilder {
   }
 }
 
-ShapeBuilder shapeBuilder = importScoreBoard();
+ShapeBuilder shapeBuilder = new ShapeBuilder();
