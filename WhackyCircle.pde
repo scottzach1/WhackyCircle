@@ -11,6 +11,9 @@ void setup() {
   surface.setTitle("Whacky Circle");
   surface.setResizable(true);
   game.initialize();
+
+  ScoreBoard scores = importScoreBoard();
+  scores.export();
 }
 
 void draw() {

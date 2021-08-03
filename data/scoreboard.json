@@ -1,0 +1,66 @@
+{
+  "highScores": [
+    {
+      "score": 77,
+      "name": "Harri",
+      "timestamp": "1627970157132"
+    },
+    {
+      "score": 73,
+      "name": "Zaci",
+      "timestamp": "1627970157132"
+    },
+    {
+      "score": 72,
+      "name": "Luisa",
+      "timestamp": "1627970157132"
+    }
+  ],
+  "allScores": [
+    {
+      "score": 73,
+      "name": "Zaci",
+      "timestamp": "1627970157132"
+    },
+    {
+      "score": 43,
+      "name": "Harri",
+      "timestamp": "1627970157132"
+    },
+    {
+      "score": 43,
+      "name": "Luisa",
+      "timestamp": "1627970157132"
+    },
+    {
+      "score": 77,
+      "name": "Harri",
+      "timestamp": "1627970157132"
+    },
+    {
+      "score": 50,
+      "name": "Harri",
+      "timestamp": "1627970157132"
+    },
+    {
+      "score": 45,
+      "name": "Zaci",
+      "timestamp": "1627970157132"
+    },
+    {
+      "score": 72,
+      "name": "Luisa",
+      "timestamp": "1627970157132"
+    },
+    {
+      "score": 42,
+      "name": "Luisa",
+      "timestamp": "1627970157132"
+    },
+    {
+      "score": 42,
+      "name": "Zaci",
+      "timestamp": "1627970157132"
+    }
+  ]
+}
