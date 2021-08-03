@@ -112,3 +112,34 @@ class Image extends Shape {
   }
   
 }
+
+class MovingCircle extends Circle {
+  public int directionX;
+  public int directionY;
+  public final color c;
+  
+  public MovingCircle(Point p, int r, int dirX , int dirY, color c) {
+    super(p, r);
+    this.directionX = dirX;
+    this.directionY = dirY;
+    this.c = c;
+  }
+
+  public MovingCircle(int x, int y, int r, int dirX , int dirY, color c) {
+    super(x, y, r);
+    this.directionX = dirX;
+    this.directionY = dirY;
+    this.c = c;
+  }
+  
+  @Override
+  public void render() {
+    ellipse(p.x, p.y, r * 2, r * 2);
+  }
+  
+  @Override
+  public boolean within(Point point) {
+    return p.distanceFrom(point) < r;
+  }
+  
+}

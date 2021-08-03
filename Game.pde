@@ -26,7 +26,7 @@ class Game {
 
     // Reset Phases
     phaseIndex = 0;
-    Phase[] phs = {new Phase1(), new Phase2(), new Phase3()};
+    Phase[] phs = {new Phase1(), new Phase2(), new Phase3(), new Phase4()};
     phases = toList(phs);
     for (Phase ph : phases) ph.initialize();
 

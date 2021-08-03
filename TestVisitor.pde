@@ -2,6 +2,7 @@ abstract class TestVisitor {
     abstract void acceptTest1(Test1 test);
     abstract void acceptTest2(Test2 test);
     abstract void acceptTest3(Test3 test);
+    abstract void acceptTest4(Test4 test);
 
     void acceptPhase(Phase p) {
         for (Test t : p.getTests()) t.accept(this);
@@ -56,6 +57,9 @@ class AverageDistanceFromCenter extends TestVisitor {
     void acceptTest3(Test3 test) {
         // TODO(zaci): Implement Me
     }
+    void acceptTest4(Test4 test) {
+        // TODO(zaci): Implement Me
+    }
 }
 
 class TimeToClickVisitor extends TestVisitor {
@@ -79,6 +83,9 @@ class TimeToClickVisitor extends TestVisitor {
         // TODO(zaci): Implement Me
     }
     void acceptTest3(Test3 test) {
+        // TODO(zaci): Implement Me
+    }
+    void acceptTest4(Test4 test) {
         // TODO(zaci): Implement Me
     }
 }

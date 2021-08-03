@@ -69,3 +69,15 @@ class Phase3 extends Phase {
   }
   
 }
+
+class Phase4 extends Phase {
+  
+  public void initialize() {
+    Test[] ts = {new Test4()};
+    
+    this.tests = toList(ts);
+    
+    for (Test t : this.tests) t.initialize();
+  }
+  
+}
