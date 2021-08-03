@@ -9,5 +9,5 @@ void mousePressed() {
 }
 
 void mouseWheel(MouseEvent e){
-  game.hand
+  game.handleMouseWheel(e.getCount());
 }

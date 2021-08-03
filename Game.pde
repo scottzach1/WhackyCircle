@@ -88,24 +88,8 @@ class Game {
     }
   }
 
-  public void handleMouseWheel(int x, int y) {
-    switch(gameState) {
-    case MAIN_MENU:
-    case RULES:
-    case HIGHSCORE:
-      gameState = ui.onClick();
-      break;
-    case RUNNING_PHASES:
-      try {
-        getPhase().getTest().getShape().tryClick(x, y);
-      } 
-      catch(NullPointerException e) { /* No shape for user to click */
-      }
-      break;
-    case GAME_COMPLETE:
-      gameCompleteState();
-      break;
-    }
+  public void handleMouseWheel(int scroll) {
+    ui.onScroll(scroll);
   }
 
   private void menuState() {
