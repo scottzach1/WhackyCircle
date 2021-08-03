@@ -8,6 +8,8 @@
 abstract class Test {
 
   private int currentCenterHoldSec = 1000;
+  private int shapeAvoidanceSec = 3000;
+  
   public static final int CENTRE_SIZE = 50;
 
   protected ArrayList<Shape> shapes;
@@ -17,6 +19,8 @@ abstract class Test {
   private int resultIndex = 0;
 
   private long centreSince = Long.MAX_VALUE;
+  private long avoidanceSince = Long.MAX_VALUE;
+
   private boolean playerReady = false; // TODO(lckrist): back to false when not testing
 
   public Test() {
@@ -92,8 +96,12 @@ abstract class Test {
     }
 
     s.render();
-
-    if (s.hasBeenClicked()) {
+    
+    if (s instanceof Square) {
+      avoidanceSince = Math.min(avoidanceSince, millis());
+    }
+    
+    if (s.hasBeenClicked() || (millis() - avoidanceSince) > (shapeAvoidanceSec)) {
       nextResult();
       playerReady = false;
       ++shapeIndex;
@@ -108,6 +116,7 @@ abstract class Test {
   */
   private void newResult() {
     if (resultIndex >= results.size()){
+      avoidanceSince = Long.MAX_VALUE;
       currentCenterHoldSec = randomInt(500, 4000);
       results.add(new Result());
       pt.start();
@@ -209,7 +218,15 @@ class Test1 extends Test {
 }
 
 class Test2 extends Test {
-  // TODO(any): Implement Me
+  // Implement in solid classes
+  public void initialize() {
+    this.shapes = builder.addTypes(ShapeType.values()).times(6).toList();
+  }
+  
+  // Implement in solid classes  
+  protected void preDrawSetup() {
+  }
+
   public void accept(TestVisitor visitor) {
     visitor.acceptTest2(this);
   }
