@@ -209,7 +209,6 @@ class HighScore extends UserInterfaceComponent {
     public BulletParagraph bp;
 
     public void run(){
-      println(Thread.currentThread());
       bp = new BulletParagraph(getHighScores(), true);
     }
   }
@@ -231,10 +230,8 @@ class HighScore extends UserInterfaceComponent {
   }
 
   protected GameState onClick() {
-    println("HERE");
     for (int i = 0; i < this.children.size(); ++i) {
       if (this.children.get(i).within()) {
-        println(children);
         return this.children.get(i).onClick();
       }
     }
