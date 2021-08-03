@@ -14,6 +14,9 @@ void setup() {
   // Perhaps when the user starts the game? (my screen states it is 2560x720 until
   // I manually resize it slightly - this is definitely not its actual size).
   game.initialize();
+
+  ScoreBoard scores = importScoreBoard();
+  scores.export();
 }
 
 void draw() {

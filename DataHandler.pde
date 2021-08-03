@@ -36,8 +36,7 @@ ScoreEntry scoreEntryFromJson(JSONObject json) {
     return new ScoreEntry(
         json.getString("name"),
         json.getInt("score"),
-        // Long.parseLong(json.getString("timestamp"))
-        System.currentTimeMillis()
+        Long.parseLong(json.getString("timestamp"))
     );
 }
 
@@ -57,10 +56,6 @@ ScoreBoard scoreBoardFromJson(JSONObject json) {
     for (int i=0; i<jsonAllScores.size(); ++i) allScores.add(scoreEntryFromJson(jsonAllScores.getJSONObject(i)));
 
     return new ScoreBoard(highScores, allScores);
-}
-
-ScoreBoard importScoreBoard() {
-    return scoreBoardFromJson(loadJSONObject("data/scoreboard.json"));
 }
 
 class ScoreBoard {
@@ -87,7 +82,6 @@ class ScoreBoard {
         JSONObject json = new JSONObject();
         json.setJSONArray("highScores", jsonHighScores);
         json.setJSONArray("allScores", jsonAllScores);
-
         return json;
     }
 
@@ -95,17 +89,15 @@ class ScoreBoard {
         export("scoreboard.json");
     }
 
-    void export(String path) {
-        saveJSONObject(this.toJson(), "data/" +path);
+    void export(String filename) {
+        saveJSONObject(this.toJson(), "data/" + filename) ;
     }
 }
 
-void loadScoresFromFile() {
-    ScoreBoard scores = importScoreBoard();
+ScoreBoard importScoreBoard() {
+    return importScoreBoard("scoreboard.json");
+}
 
-    println(scores.highScores.size());
-    println(scores.allScores.size());
-
-    println(scores.highScores);
-    println(scores.allScores);
+ScoreBoard importScoreBoard(String filename) {
+    return scoreBoardFromJson(loadJSONObject(filename));
 }
