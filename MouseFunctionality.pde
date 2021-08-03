@@ -5,5 +5,9 @@
 * unitl the mouse has been released. 
 */
 void mousePressed() {
-  game.handleMouse(mouseX, mouseY);
+  game.handleMouseClick(mouseX, mouseY);
+}
+
+void mouseWheel(MouseEvent e){
+  game.handleMouseWheel(e.getCount());
 }

@@ -63,8 +63,8 @@ ScoreBoard scoreBoardFromJson(JSONObject json) {
 }
 
 class ScoreBoard {
-    ArrayList<ScoreEntry> highScores = new ArrayList();
-    ArrayList<ScoreEntry> allScores = new ArrayList();
+    public ArrayList<ScoreEntry> highScores = new ArrayList();
+    public ArrayList<ScoreEntry> allScores = new ArrayList();
 
     ScoreBoard() {
         this.highScores = new ArrayList();
