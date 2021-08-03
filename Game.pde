@@ -2,7 +2,8 @@ enum GameState {
   MAIN_MENU, 
   RULES, 
   HIGHSCORE, 
-  RUNNING_PHASES, 
+  RUNNING_PHASES,
+  GAME_FINISHED, 
   GAME_COMPLETE
 }
 
@@ -17,8 +18,7 @@ class Game {
   private ScoreKeeper score;
 
   public void initialize() { 
-    if (ui == null)     
-      ui = new GameUserInterface();
+    ui = new GameUserInterface();
     new AssetLoader().start();
 
     // New Score Keeper
@@ -62,6 +62,9 @@ class Game {
     case RUNNING_PHASES:
       runningState();
       break;
+    case GAME_FINISHED:
+      gameFinishedState();
+      break;
     case GAME_COMPLETE:
       gameCompleteState();
       break;
@@ -73,6 +76,7 @@ class Game {
     case MAIN_MENU:
     case RULES:
     case HIGHSCORE:
+    case GAME_FINISHED:
       gameState = ui.onClick();
       break;
     case RUNNING_PHASES:
@@ -82,14 +86,15 @@ class Game {
       catch(NullPointerException e) { /* No shape for user to click */
       }
       break;
-    case GAME_COMPLETE:
-      gameCompleteState();
-      break;
     }
   }
 
   public void handleMouseWheel(int scroll) {
     ui.onScroll(scroll);
+  }
+
+  public void handleKeyPress(Character c){
+    ui.onKey(c);
   }
 
   private void menuState() {
@@ -104,6 +109,11 @@ class Game {
 
   private void highScoreState() {
     ui.toHighScore();
+    ui.render();
+  }
+
+  private void gameFinishedState() {
+    ui.toFinalScreen();
     ui.render();
   }
 
@@ -124,11 +134,13 @@ class Game {
       ++phaseIndex;
       score.resetPhase();
     }
-    if (phaseIndex == phases.size()) gameState = GameState.GAME_COMPLETE;
+    if (phaseIndex == phases.size()) gameState = GameState.GAME_FINISHED;
   }
 
   private void gameCompleteState() {
     println("Game Complete :party-parrot:");
+    ui.toFinalScreen();
+    ui.render();
 
     TestVisitor distVisitor = new AverageDistanceFromCenter();
     TestVisitor fittzVisitor = new TimeToClickVisitor();
