@@ -1,5 +1,6 @@
 enum GameState {
   MAIN_MENU, 
+  RULES,
     HIGHSCORE, 
     RUNNING_PHASES, 
     GAME_COMPLETE
@@ -35,7 +36,7 @@ class Game {
 
   class AssetLoader extends Thread {
     public void run() {
-      centerMouse = loadImage("cm.jpg");
+      centerMouse = loadImage("cm.png");
     }
   }
 
@@ -52,6 +53,9 @@ class Game {
     case MAIN_MENU:
       menuState();
       break;
+    case RULES:
+      ruleState();
+      break;
     case HIGHSCORE:
       highScoreState();
       break;
@@ -64,9 +68,30 @@ class Game {
     }
   }
 
-  public void handleMouse(int x, int y) {
+  public void handleMouseClick(int x, int y) {
     switch(gameState) {
     case MAIN_MENU:
+    case RULES:
+    case HIGHSCORE:
+      gameState = ui.onClick();
+      break;
+    case RUNNING_PHASES:
+      try {
+        getPhase().getTest().getShape().tryClick(x, y);
+      } 
+      catch(NullPointerException e) { /* No shape for user to click */
+      }
+      break;
+    case GAME_COMPLETE:
+      gameCompleteState();
+      break;
+    }
+  }
+
+  public void handleMouseWheel(int x, int y) {
+    switch(gameState) {
+    case MAIN_MENU:
+    case RULES:
     case HIGHSCORE:
       gameState = ui.onClick();
       break;
@@ -85,6 +110,11 @@ class Game {
 
   private void menuState() {
     ui.toMainMenu();
+    ui.render();
+  }
+
+  private void ruleState() {
+    ui.toRules();
     ui.render();
   }
 

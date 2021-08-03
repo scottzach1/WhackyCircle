@@ -5,6 +5,7 @@
  */
 abstract class UserInterfaceComponent {
   protected ArrayList<UserInterfaceComponent> children;
+  protected String font =  "Fira Sans Condensed Bold";
 
   UserInterfaceComponent() {
     children = new ArrayList();
@@ -35,8 +36,10 @@ class GameUserInterface extends UserInterfaceComponent {
 
   protected void generateChildren() {
     UserInterfaceComponent menu = new MainMenu();
+    UserInterfaceComponent rule = new Rules();
     UserInterfaceComponent high = new HighScore();
     this.children.add(menu);
+    this.children.add(rule);
     this.children.add(high);
   }
 
@@ -44,8 +47,12 @@ class GameUserInterface extends UserInterfaceComponent {
     currentChild = 0;
   }
 
-  public void toHighScore() { 
+  public void toRules() { 
     currentChild = 1;
+  }
+
+  public void toHighScore() { 
+    currentChild = 2;
   }
 
   public boolean within() {
@@ -67,10 +74,13 @@ class GameUserInterface extends UserInterfaceComponent {
 class MainMenu extends UserInterfaceComponent {
 
   protected void generateChildren() {
-    Button play = new Button(new Point(width / 2, height / 2), new Point(width / 3, 75), color(145, 145, 145), color(102, 207, 255, 50), "PLAY");   
-    Button score = new Button(new Point(width / 2, height / 2 + 100), new Point(width / 3, 75), color(145, 145, 145), color(102, 207, 255, 50), "HIGHSCORE");   
-    Button quit = new Button(new Point(width / 2, height / 2 + 200), new Point(width / 3, 75), color(145, 145, 145), color(102, 207, 255, 50), "QUIT");  
+    int buttonStartHeight = height / 2 - 75;
+    Button play = new Button(new Point(width / 2, buttonStartHeight), new Point(width / 3, 75), color(145, 145, 145), color(102, 207, 255, 50), "PLAY");   
+    Button rule = new Button(new Point(width / 2, buttonStartHeight + 100), new Point(width / 3, 75), color(145, 145, 145), color(102, 207, 255, 50), "RULES");   
+    Button score = new Button(new Point(width / 2, buttonStartHeight + 200), new Point(width / 3, 75), color(145, 145, 145), color(102, 207, 255, 50), "HIGHSCORE");   
+    Button quit = new Button(new Point(width / 2, buttonStartHeight + 300), new Point(width / 3, 75), color(145, 145, 145), color(102, 207, 255, 50), "QUIT");  
     this.children.add(play);
+    this.children.add(rule);
     this.children.add(score);
     this.children.add(quit);
   }
@@ -98,9 +108,46 @@ class MainMenu extends UserInterfaceComponent {
 
   private void renderTitle() {
     textAlign(CENTER, CENTER);
-    textFont(createFont("Fira Sans Condensed Bold", height / 4));
+    textFont(createFont(font, height / 4));
     fill(0);
     text("WHACKY CIRCLE", width / 2, 100);
+  }
+}
+
+/**
+ Highscore is used to present players with the top ten scores. 
+ */
+class Rules extends UserInterfaceComponent {
+
+  protected void generateChildren() {
+    //TODO: Get HighScores
+    Button back = new Button(new Point(width / 2, height - 100), new Point(width / 3, 75), color(145, 145, 145), color(102, 207, 255, 50), "MAIN MENU");
+    this.children.add(back);
+  }
+
+  public boolean within() {
+    return true;
+  }
+
+  protected GameState onClick() {
+    if (this.children.get(0).within()) return GameState.MAIN_MENU;
+    return GameState.RULES;
+  }
+
+  public void render() {
+    //TODO: Render HighScores
+    background(55);
+    renderTitle();
+    for (int i = 0; i < this.children.size(); ++i) {
+      this.children.get(i).render();
+    }
+  }
+
+  private void renderTitle() {
+    textAlign(CENTER, CENTER);
+    textFont(createFont(font, height / 4));
+    fill(0);
+    text("RULES", width / 2, 100);
   }
 }
 
@@ -135,7 +182,7 @@ class HighScore extends UserInterfaceComponent {
 
   private void renderTitle() {
     textAlign(CENTER, CENTER);
-    textFont(createFont("Fira Sans Condensed Bold", height / 4));
+    textFont(createFont(font, height / 4));
     fill(0);
     text("HIGHSCORES", width / 2, 100);
   }
@@ -170,6 +217,8 @@ class Button extends UserInterfaceComponent {
     switch (text) {
     case "PLAY":
       return GameState.RUNNING_PHASES;
+    case "RULES":
+      return GameState.RULES;
     case "HIGHSCORE":
       return GameState.HIGHSCORE;
     case "QUIT":
@@ -196,7 +245,34 @@ class Button extends UserInterfaceComponent {
     text(text, pos.x, pos.y - 5);
   }
 
-  protected void generateChildren() {
-    // No children for me (Leaf Node)
+  protected void generateChildren() {/* No children for me (Leaf Node) */}
+}
+
+/**
+BulletParagraph takes an array of strings and converts them into a nicely 
+displayed paragraph.
+ */
+class BulletParagraph extends UserInterfaceComponent {
+  private final String[] text;
+  private final Point pos, size;
+
+  BulletParagraph(Point p, Point s, String[] t) {
+    this.pos = p;
+    this.size = s;
+    this.text = t;
   }
+
+  public boolean within() {
+    return true && 
+      inBoundsExcl(mouseX, pos.x - (size.x / 2), pos.x + (size.x / 2)) && 
+      inBoundsExcl(mouseY, pos.y - (size.y / 2), pos.y + (size.y / 2));
+  }
+
+
+  protected GameState onClick() {/*Paragraphs shouldn't be actioned*/ return game.gameState;}
+
+  public void render() {
+  }
+
+  protected void generateChildren() {/* No children for me (Leaf Node) */}
 }
