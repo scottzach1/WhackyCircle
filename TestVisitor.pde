@@ -61,18 +61,15 @@ class AverageDistanceFromCenter extends TestVisitor {
 class TimeToClickVisitor extends TestVisitor {
     
     void acceptTest1(Test1 test) {
-        SumFunc<Float> fun = new SumFunc<Float>() {
+        SumFunc<Float> func = new SumFunc<Float>() {
             public Float apply(Test.Result r, Float sum) {
                 return sum + r.timeToClick();
             }
         };
-
-        float totalTimeToClick = sumResults(test.getResults(), fun, 0f);
-
-
+        float totalTimeToClick = sumResults(test.getResults(), func, 0f);
         float avgTimeToClick = totalTimeToClick / test.getResults().size();
 
-        println("AVG FITTZ: " + avgTimeToClick);
+        println("AVG FITTZ: " + avgTimeToClick + "s");
     }
 
     void acceptTest2(Test2 test) {

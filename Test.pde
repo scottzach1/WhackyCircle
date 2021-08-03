@@ -169,23 +169,26 @@ abstract class Test {
       long endTimestamp = path.get(path.size() - 1).left;
       Point endPoint = path.get(path.size() - 1).right;
 
-      long actionTimestamp = Long.MAX_VALUE;
+      long actionTimestamp = 0L;
 
+      int i = 0;
       for (Pair<Long, Point> pair : path) {
+          ++i;
           // get the first timestamp the point changed.
           if (startPoint.equals(pair.right)) {
-              actionTimestamp = Math.min(pair.left, actionTimestamp);
+              actionTimestamp = Math.max(pair.left, actionTimestamp);
           }
       }
 
-      float responseTime = (float) actionTimestamp - startTimestamp;
-      float actionTime = (float) endTimestamp - actionTimestamp;
-
+      long responseTime = (long) actionTimestamp - startTimestamp;
+      long actionTime = (long) endTimestamp - actionTimestamp;
+      
       float distanceToTarget = getDist();
       float widthOfTarget = float(shape.r);
 
-      float timeToClick = responseTime + actionTime * log2(1 + distanceToTarget / widthOfTarget);
-      return timeToClick / 1000; // get seconds
+      long timeToClick = responseTime + actionTime * (long) (log2(1 + distanceToTarget / widthOfTarget));
+
+      return ((float) timeToClick) / 1000; // get seconds;
     }
   }
 }
