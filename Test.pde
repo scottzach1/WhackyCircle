@@ -117,7 +117,10 @@ abstract class Test {
   private void newResult() {
     if (resultIndex >= results.size()){
       avoidanceSince = Long.MAX_VALUE;
-      currentCenterHoldSec = randomInt(500, 4000);
+      centreSince = Long.MAX_VALUE;
+      if (!(this instanceof Test1)) {
+        currentCenterHoldSec = randomInt(1000, 4000);
+      }
       results.add(new Result());
       pt.start();
     }
@@ -205,7 +208,7 @@ class Test1 extends Test {
 
   // Implement in solid classes
   public void initialize() {
-    this.shapes = builder.addType(ShapeType.CIRCLE).times(3).toList();
+    this.shapes = builder.addType(ShapeType.CIRCLE).times(5).toList();
   }
 
   // Implement in solid classes  
@@ -220,7 +223,7 @@ class Test1 extends Test {
 class Test2 extends Test {
   // Implement in solid classes
   public void initialize() {
-    this.shapes = builder.addTypes(ShapeType.values()).times(6).toList();
+    this.shapes = builder.addType(ShapeType.CIRCLE).times(5).toList();
   }
   
   // Implement in solid classes  
@@ -233,7 +236,15 @@ class Test2 extends Test {
 }
 
 class Test3 extends Test {
-  // TODO(any): Implement Me
+    // Implement in solid classes
+  public void initialize() {
+    this.shapes = builder.addTypes(ShapeType.values()).times(8).toList();
+  }
+  
+  // Implement in solid classes  
+  protected void preDrawSetup() {
+  }
+
   public void accept(TestVisitor visitor) {
     visitor.acceptTest3(this);
   }
