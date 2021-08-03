@@ -5,11 +5,11 @@ import java.util.UUID;
 // ======================================================================
 
 class MetricRow {
-    String name;
-    int phase;
-    float timeToClick;
-    UUID gameId;
-    long timestamp;
+    public final String name;
+    public final int phase;
+    public final float timeToClick;
+    public final UUID gameId;
+    public final long timestamp;
 
     public MetricRow(String name,
                      int phase,
