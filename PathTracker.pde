@@ -23,14 +23,14 @@ class PathTracker {
     private final int READS_PER_SEC = 60;
 
     public void run() {
-      long time = millis();
+      long time = System.currentTimeMillis();
       while (true) {
         if (this.isInterrupted()) {
           break;
         }
-        Long diff = millis() - time;
+        Long diff = System.currentTimeMillis() - time;
         if ((diff > 0) && (READS_PER_SEC <= 0 || diff % (1000 / READS_PER_SEC) == 0)) {
-          time = millis();
+          time = System.currentTimeMillis();
           path.add(new Pair(time, new Point(mouseX, mouseY)));
         }
       }

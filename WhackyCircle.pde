@@ -17,6 +17,9 @@ void setup() {
 
   ScoreBoard scores = importScoreBoard();
   scores.export();
+
+  ArrayList<MetricRow> metrics = loadMetrics("metrics.csv");
+  saveMetrics(metrics);
 }
 
 void draw() {
