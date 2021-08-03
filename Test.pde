@@ -7,7 +7,7 @@
  */
 abstract class Test {
 
-  private final int CENTER_HOLD_SECS = 1;
+  private int currentCenterHoldSec = 1000;
   public static final int CENTRE_SIZE = 50;
 
   protected ArrayList<Shape> shapes;
@@ -63,7 +63,6 @@ abstract class Test {
    * TODO: Display count down timer
    */
   private void mouseCentre() {
-    // Shape centreShape = new Square(width / 2, height / 2, CENTRE_SIZE);
     Shape centreShape = new Image(centerMouse, width / 2, height / 2, CENTRE_SIZE);
     centreShape.render();
 
@@ -74,7 +73,7 @@ abstract class Test {
     centreSince = Math.min(centreSince, millis());
     // Check if been in square > CENTER_HOLD_SECS seconds.
 
-    if ((millis() - centreSince) > (CENTER_HOLD_SECS * 1000)) {
+    if ((millis() - centreSince) > (currentCenterHoldSec)) {
       newResult();
       playerReady = true;
     }
@@ -109,6 +108,7 @@ abstract class Test {
   */
   private void newResult() {
     if (resultIndex >= results.size()){
+      currentCenterHoldSec = randomInt(500, 4000);
       results.add(new Result());
       pt.start();
     }
