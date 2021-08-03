@@ -45,3 +45,39 @@ class Phase1 extends Phase {
   }
   
 }
+
+class Phase2 extends Phase {
+  
+  public void initialize() {
+    Test[] ts = {new Test2()};
+    
+    this.tests = toList(ts);
+    
+    for (Test t : this.tests) t.initialize();
+  }
+  
+}
+
+class Phase3 extends Phase {
+  
+  public void initialize() {
+    Test[] ts = {new Test3()};
+    
+    this.tests = toList(ts);
+    
+    for (Test t : this.tests) t.initialize();
+  }
+  
+}
+
+class Phase4 extends Phase {
+  
+  public void initialize() {
+    Test[] ts = {new Test4()};
+    
+    this.tests = toList(ts);
+    
+    for (Test t : this.tests) t.initialize();
+  }
+  
+}

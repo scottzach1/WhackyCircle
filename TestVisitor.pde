@@ -1,7 +1,6 @@
 abstract class TestVisitor {
-    abstract void acceptTest1(Test1 test);
-    abstract void acceptTest2(Test2 test);
-    abstract void acceptTest3(Test3 test);
+    abstract Long acceptTest(Test test);
+    abstract String metricKey();
 
     void acceptPhase(Phase p) {
         for (Test t : p.getTests()) t.accept(this);
@@ -38,8 +37,11 @@ interface SumFunc<T> {
 
 class AverageDistanceFromCenter extends TestVisitor {
 
+    String metricKey() {
+        return "AverageDistance";
+    }
 
-    void acceptTest1(Test1 test) {
+    Long acceptTest(Test test) {
         SumFunc<Float> func = new SumFunc<Float>() {
             public Float apply(Test.Result r, Float sum) { return sum + r.getDist(); }
         };
@@ -47,38 +49,79 @@ class AverageDistanceFromCenter extends TestVisitor {
         float totalDist = sumResults(test.getResults(), func, 0f);
         float avgDist = totalDist / test.getResults().size();
 
-        println("AVG DISTANCE: " + avgDist);
+        return (long) avgDist;
+    }
+}
+
+class FittzVisitor extends TestVisitor {
+    String metricKey() {
+        return "Fittz";
     }
 
-    void acceptTest2(Test2 test) {
-        // TODO(zaci): Implement Me
+    Long acceptTest(Test test) {
+        SumFunc<Long> func = new SumFunc<Long>() {
+            public Long apply(Test.Result r, Long sum) {
+                return sum + r.getFittz();
+            }
+        };
+        long totalFittz = sumResults(test.getResults(), func, 0L);
+        long avgFittz = totalFittz / test.getResults().size();
+
+        return avgFittz;
     }
-    void acceptTest3(Test3 test) {
-        // TODO(zaci): Implement Me
+}
+
+class ResponseTimeVisitor extends TestVisitor {
+    String metricKey() {
+        return "ResponseTime";
+    }
+
+    Long acceptTest(Test test) {
+        SumFunc<Long> func = new SumFunc<Long>() {
+            public Long apply(Test.Result r, Long sum) {
+                return sum + r.getResponseTime();
+            }
+        };
+        long totalResponseTime = sumResults(test.getResults(), func, 0L);
+        long avgResponseTime = totalResponseTime / test.getResults().size();
+
+        return avgResponseTime;
+    }
+}
+
+class ActionTimeVisitor extends TestVisitor {
+    String metricKey() {
+        return "ActionTime";
+    }
+
+    Long acceptTest(Test test) {
+        SumFunc<Long> func = new SumFunc<Long>() {
+            public Long apply(Test.Result r, Long sum) {
+                return sum + r.getActionTime();
+            }
+        };
+        long totalActionTime = sumResults(test.getResults(), func, 0L);
+        long avgActionTime = totalActionTime / test.getResults().size();
+
+        return avgActionTime;
     }
 }
 
 class TimeToClickVisitor extends TestVisitor {
-    
-    void acceptTest1(Test1 test) {
-        SumFunc<Float> fun = new SumFunc<Float>() {
-            public Float apply(Test.Result r, Float sum) {
-                return sum + r.timeToClick();
+    String metricKey() {
+        return "TimeToClick";
+    }
+
+    Long acceptTest(Test test) {
+        SumFunc<Long> func = new SumFunc<Long>() {
+            public Long apply(Test.Result r, Long sum) {
+                ArrayList<Pair<Long, Point>> path = r.getPath();
+                return sum + path.get(path.size()-1).left - path.get(0).left;
             }
         };
+        long totalTimeToClick = sumResults(test.getResults(), func, 0L);
+        long avgTimeToClick = totalTimeToClick / test.getResults().size();
 
-        float totalTimeToClick = sumResults(test.getResults(), fun, 0f);
-
-
-        float avgTimeToClick = totalTimeToClick / test.getResults().size();
-
-        println("AVG FITTZ: " + avgTimeToClick);
-    }
-
-    void acceptTest2(Test2 test) {
-        // TODO(zaci): Implement Me
-    }
-    void acceptTest3(Test3 test) {
-        // TODO(zaci): Implement Me
+        return avgTimeToClick;
     }
 }

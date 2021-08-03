@@ -11,3 +11,12 @@ void mousePressed() {
 void mouseWheel(MouseEvent e){
   game.handleMouseWheel(e.getCount());
 }
+
+void keyPressed() {
+  if (keyCode == 8)
+    game.handleKeyPress('-');
+  else if(keyCode == 10)
+    game.handleKeyPress('`');
+  else if (Character.isAlphabetic(key) || Character.isDigit(key))
+    game.handleKeyPress(key);
+}

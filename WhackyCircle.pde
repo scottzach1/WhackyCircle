@@ -12,9 +12,6 @@ void setup() {
   surface.setTitle("Whacky Circle");
   surface.setResizable(true);
   game.initialize();
-
-  ArrayList<MetricRow> metrics = loadMetrics("metrics.csv");
-  saveMetrics(metrics);
 }
 
 void draw() {
