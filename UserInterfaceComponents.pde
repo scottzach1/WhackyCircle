@@ -4,6 +4,7 @@
  differnt properties to user interface components.
  */
 abstract class UserInterfaceComponent {
+  public String userName = "";
   protected ArrayList<UserInterfaceComponent> children;
   protected final String FONT =  "FiraSansCondensed-Bold.ttf";
   protected final String FONT_SMALL =  "FiraSansCondensed-Light.ttf";
@@ -17,6 +18,7 @@ abstract class UserInterfaceComponent {
   public abstract boolean within();
   protected abstract GameState onClick();
   protected abstract void onScroll(int scroll);
+  protected abstract void onKey(Character c);
   public abstract void render();
   protected abstract void generateChildren();
 }
@@ -40,9 +42,11 @@ class GameUserInterface extends UserInterfaceComponent {
     UserInterfaceComponent menu = new MainMenu();
     UserInterfaceComponent rule = new Rules();
     UserInterfaceComponent high = new HighScore();
+    UserInterfaceComponent fins = new FinalGameScreen();
     this.children.add(menu);
     this.children.add(rule);
     this.children.add(high);
+    this.children.add(fins);
   }
 
   public void toMainMenu() { 
@@ -57,6 +61,10 @@ class GameUserInterface extends UserInterfaceComponent {
     currentChild = 2;
   }
 
+  public void toFinalScreen() { 
+    currentChild = 3;
+  }
+
   public boolean within() {
     return this.children.get(currentChild).within();
   }
@@ -67,6 +75,11 @@ class GameUserInterface extends UserInterfaceComponent {
 
   protected void onScroll(int scroll) {
     this.children.get(currentChild).onScroll(scroll);
+  }
+
+  protected void onKey(Character c) {
+    if (currentChild == 3)
+      this.children.get(currentChild).onKey(c);
   }
 
   public void render() { 
@@ -113,6 +126,10 @@ class MainMenu extends UserInterfaceComponent {
     }
   }
 
+  protected void onKey(Character c) {
+    // Does nothing
+  }
+
   public void render() {
     background(55);
     renderTitle();
@@ -139,12 +156,12 @@ class Rules extends UserInterfaceComponent {
       "Each game is made up of several phases,", 
       "with each phase having some slight variation", 
       "from the last. At the start of a game hold", 
-      "your mouse in the centre of the screen (indicated",
-      "by the white circle with a cursor and timer image.",
-      "After some period of time, the center circle will",
-      "disappear, and another circle will be on screen.",
-      "Your task, is to try click this appearing circle",
-      "as fast as possible.",
+      "your mouse in the centre of the screen (indicated", 
+      "by the white circle with a cursor and timer image.", 
+      "After some period of time, the center circle will", 
+      "disappear, and another circle will be on screen.", 
+      "Your task, is to try click this appearing circle", 
+      "as fast as possible.", 
       }, false);
     Button back = new Button(new Point(width / 2, height - 100), new Point(width / 3, 75), color(145, 145, 145), color(102, 207, 255, 50), "MAIN MENU");
     this.children.add(bp);
@@ -171,6 +188,10 @@ class Rules extends UserInterfaceComponent {
         return;
       }
     }
+  }
+
+  protected void onKey(Character c) {
+    // Does nothing
   }
 
   public void render() {
@@ -227,13 +248,17 @@ class HighScore extends UserInterfaceComponent {
     }
   }
 
+  protected void onKey(Character c) {
+    // Does nothing
+  }
+
   public void render() {
     background(55);
     renderTitle();
     for (int i = 0; i < this.children.size(); ++i) {
       this.children.get(i).render();
     }
-    if (hsl.update()){
+    if (hsl.update()) {
       this.children.set(0, new BulletParagraph(hsl.getContents(), true));
     }
   }
@@ -243,17 +268,17 @@ class HighScore extends UserInterfaceComponent {
     private String[] contents;
     private ArrayList<String> oldHighScores = new ArrayList();
 
-    public void run(){
+    public void run() {
 
-      while(!this.isInterrupted()){
+      while (!this.isInterrupted()) {
         boolean u = false;
-        
+
         if (sb == null) continue;
-        
+
         ArrayList<String> highScores = new ArrayList();
         ArrayList<ScoreEntry> highScoreEntries = new ArrayList(sb.highScores);
-        
-        for (ScoreEntry se : highScoreEntries){
+
+        for (ScoreEntry se : highScoreEntries) {
           highScores.add(se.name + " : " + se.score);
         }
 
@@ -261,24 +286,27 @@ class HighScore extends UserInterfaceComponent {
           u = true;
         else
           for (int i = 0; i < highScores.size(); ++i)
-            if (!highScores.get(i).equals(oldHighScores.get(i))){ u = true; break; }
+            if (!highScores.get(i).equals(oldHighScores.get(i))) { 
+              u = true; 
+              break;
+            }
 
         if (u) {
           oldHighScores = highScores;
           contents = new String[oldHighScores.size()];
-          for(int i = 0; i < oldHighScores.size(); ++i) contents[i] = oldHighScores.get(i);
+          for (int i = 0; i < oldHighScores.size(); ++i) contents[i] = oldHighScores.get(i);
           update = true;
         }
       }
     }
 
-    public boolean update(){
+    public boolean update() {
       boolean oldUpdate = update;
       update = false;
       return oldUpdate;
     }
 
-    public String[] getContents(){
+    public String[] getContents() {
       return contents;
     }
   }
@@ -288,6 +316,97 @@ class HighScore extends UserInterfaceComponent {
     textFont(createFont(FONT, height / 4));
     fill(0);
     text("HIGHSCORES", width / 2, 100);
+  }
+}
+
+class FinalGameScreen extends UserInterfaceComponent {
+  private ArrayList<Character> cs;
+  private int dots = 0;
+  private int lastDot = 0;
+
+  protected void generateChildren() { 
+    cs = new ArrayList();
+    Button back = new Button(new Point(width / 2, height - 100), new Point(width / 3, 75), color(145, 145, 145), color(102, 207, 255, 50), "SUBMIT");
+    this.children.add(back);
+  }
+
+  public boolean within() {
+    return true;
+  }
+
+  protected GameState onClick() {
+    if (cs.size() == 3)
+      for (int i = 0; i < this.children.size(); ++i)
+        if (this.children.get(i).within())
+          return this.children.get(i).onClick();
+    return GameState.GAME_FINISHED;
+  }
+
+  protected void onScroll(int scroll) {/*NOTHING*/
+  }
+
+  protected void onKey(Character c) {
+    if (c == '`') {if (cs.size() == 3) {game.gameState = GameState.GAME_COMPLETE;}}
+    else if (c == '-') {cs.remove(cs.size() - 1);}
+    else if (cs.size() <= 3) {cs.add(c);}
+  }
+
+  public void render() {
+    background(55);
+    renderTitle();
+    if (game.gameState == GameState.GAME_COMPLETE) {
+      renderDots();
+    } else {
+      for (int i = 0; i < this.children.size(); ++i) {
+        renderChars();
+        this.children.get(i).render();
+      }
+    }
+  }
+
+  private void renderTitle() {
+    textAlign(CENTER, CENTER);
+    textFont(createFont(FONT, height / 4));
+    fill(0);
+    text("FINISHED", width / 2, 100);
+  }
+
+  private void renderDots(){
+    textAlign(CENTER, CENTER);
+    textFont(createFont(FONT, height / 4));
+    fill(0);
+    String str = "";
+    for (int i = 0; i < dots; ++i){
+      str += ".";
+    }
+    if (millis() - lastDot > 1000){
+      dots = (dots + 1) % 5;
+      lastDot = millis();
+    }
+    text(str, width / 2, height / 2);
+  }
+
+  private void renderChars(){
+    textAlign(CENTER, CENTER);
+    textFont(createFont(FONT_SMALL, height / 8));
+    fill(0);
+    text("Enter your initials:", width / 2, 250);
+
+    // Chars
+    int rectSize = height/6;
+    fill(100);
+    rectMode(CENTER);
+    textFont(createFont(FONT, rectSize));
+    for(int i = 0; i < 3; i++){
+      int x = width / 2 + ((rectSize + 30) * (i-1));
+      int y = height*2/3;
+      fill(100);
+      rect(x, y, rectSize, rectSize);
+      if(i < cs.size()){
+        fill(0);
+        text(cs.get(i) + "", x, y - 10);
+      }
+    }
   }
 }
 
@@ -324,6 +443,8 @@ class Button extends UserInterfaceComponent {
       return GameState.RULES;
     case "HIGHSCORE":
       return GameState.HIGHSCORE;
+    case "SUBMIT":
+      return GameState.GAME_COMPLETE;
     case "QUIT":
       exit();
     default :
@@ -332,6 +453,10 @@ class Button extends UserInterfaceComponent {
   }
 
   protected void onScroll(int scroll) {/*Buttons don't scroll*/
+  }
+
+  protected void onKey(Character c) {
+    // Does nothing
   }
 
   public void render() {
@@ -369,7 +494,7 @@ class BulletParagraph extends UserInterfaceComponent {
   BulletParagraph(String[] t, boolean numPts) {
     this.text = t;
     this.numberedPoints = numPts;
-    
+
     String longestText = "";
     for (int i = 0; i < text.length; ++i) if (text[i].length() > longestText.length()) longestText = text[i];
     textFont(createFont(FONT_SMALL, tSize));
@@ -400,6 +525,10 @@ class BulletParagraph extends UserInterfaceComponent {
     }
   }
 
+  protected void onKey(Character c) {
+    // Does nothing
+  }
+
   public void render() {
     fill(200);
     textFont(createFont(FONT_SMALL, tSize));
@@ -415,7 +544,7 @@ class BulletParagraph extends UserInterfaceComponent {
       if (numberedPoints)
         text((i + scrollFactor + 1) + " : " + curStr, pos.x - (size.x / 2) + 10, textY);
       else 
-        text("> " + curStr, pos.x - (size.x / 2) + 10, textY);
+      text("> " + curStr, pos.x - (size.x / 2) + 10, textY);
     }
     if (i + scrollFactor < text.length) text("...", pos.x - (size.x / 2) + 10, textY);
   }
