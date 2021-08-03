@@ -39,8 +39,8 @@ String getClassName(Object o, String fallback) {
    return int(random(lower, upper));
  }
 
- float log2(float value) {
-   return (float) (Math.log(value) / Math.log(2));
+ long log2(long value) {
+   return (long) (Math.log(value) / Math.log(2));
  }
  
 //Image assets to be loaded in

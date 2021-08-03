@@ -25,7 +25,7 @@ abstract class Test {
     this.initialize(); // Method to generate shapes for this test.
   }
 
-  public abstract float accept(TestVisitor visitor); 
+  public abstract Long accept(TestVisitor visitor); 
 
   // Implement in solid classes
   public void initialize() {
@@ -162,13 +162,10 @@ abstract class Test {
       return new ArrayList(path);
     }
 
-    float timeToClick() {
+    long getActionTimestamp() {
       long startTimestamp = path.get(0).left;
       Point startPoint = path.get(0).right;
-
-      long endTimestamp = path.get(path.size() - 1).left;
-      Point endPoint = path.get(path.size() - 1).right;
-
+      
       long actionTimestamp = 0L;
 
       int i = 0;
@@ -180,15 +177,26 @@ abstract class Test {
           }
       }
 
-      long responseTime = (long) actionTimestamp - startTimestamp;
-      long actionTime = (long) endTimestamp - actionTimestamp;
-      
+      return actionTimestamp;
+    }
+
+    long getResponseTime() {
+      long startTimestamp = path.get(0).left;
+
+      return getActionTimestamp() - startTimestamp;
+    }
+
+    long getActionTime() {
+      long endTimestamp = path.get(path.size() - 1).left;
+
+      return endTimestamp - getActionTimestamp();
+    }
+
+    long getFittz() {
       float distanceToTarget = getDist();
       float widthOfTarget = float(shape.r);
-
-      long timeToClick = responseTime + actionTime * (long) (log2(1 + distanceToTarget / widthOfTarget));
-
-      return ((float) timeToClick) / 1000; // get seconds;
+      
+      return getResponseTime() + getActionTime() * (log2(1 + (long) (distanceToTarget / widthOfTarget)));
     }
   }
 }
@@ -206,21 +214,21 @@ class Test1 extends Test {
   protected void preDrawSetup() {
   }
 
-  public float accept(TestVisitor visitor) {
-    return visitor.acceptTest1(this);
+  public Long accept(TestVisitor visitor) {
+    return visitor.acceptTest(this);
   }
 }
 
 class Test2 extends Test {
   // TODO(any): Implement Me
-  public float accept(TestVisitor visitor) {
-    return visitor.acceptTest2(this);
+  public Long accept(TestVisitor visitor) {
+    return visitor.acceptTest(this);
   }
 }
 
 class Test3 extends Test {
   // TODO(any): Implement Me
-  public float accept(TestVisitor visitor) {
-    return visitor.acceptTest3(this);
+  public Long accept(TestVisitor visitor) {
+    return visitor.acceptTest(this);
   }
 }

@@ -27,7 +27,7 @@ class Game {
     // Reset Phases
     phaseIndex = 0;
     Phase[] phs = {
-      new Phase1(), new Phase1()
+      new Phase1()
     };
     phases = toList(phs);
     for (Phase ph: phases) ph.initialize();
@@ -132,11 +132,16 @@ class Game {
   private void gameCompleteState() {
     println("Game Complete :party-parrot:");
     saveMetrics();
+    initialize();
+    gameState = GameState.MAIN_MENU;
   }
 
   private void saveMetrics() {
     TestVisitor[] visitors = {
       new AverageDistanceFromCenter(),
+      new FittzVisitor(),
+      new ResponseTimeVisitor(),
+      new ActionTimeVisitor(),
       new TimeToClickVisitor()
     };
 
@@ -151,9 +156,9 @@ class Game {
       for (TestVisitor v: visitors) {
         String metricKey = v.metricKey();
         
-        float averageValue = 0f;
+        long averageValue = 0L;
         for (Test t: p.getTests()) averageValue += t.accept(v);
-        averageValue = averageValue / p.getTests().size();
+        averageValue = averageValue / (long) p.getTests().size();
 
         metric.metrics.put(metricKey, averageValue);
       }
@@ -162,7 +167,5 @@ class Game {
 
     saveMetricsToFile(metrics, uuid, "zaci");
     saveGamePaths(phases, uuid, "zaci");
-    initialize();
-    gameState = GameState.MAIN_MENU;
   }
 }

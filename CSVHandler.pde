@@ -7,7 +7,7 @@ import java.util.UUID;
 class MetricRow {
     public final String name;
     public final int phase;
-    public final HashMap<String, Float> metrics = new HashMap();
+    public final HashMap<String, Long> metrics = new HashMap();
     public final UUID gameId;
     public final long timestamp;
 
@@ -41,7 +41,7 @@ void saveMetricsToFile(ArrayList<MetricRow> metrics, UUID gameId, String name) {
     HashMap<String, Integer> keys = new HashMap();
 
     for (MetricRow m : metrics) for (String s : m.metrics.keySet()) keys.put(s, 0);
-    for (String s : keys.keySet()) table.addColumn(s, Table.FLOAT);
+    for (String s : keys.keySet()) table.addColumn(s, Table.STRING);
 
     for (MetricRow m : metrics) {
         TableRow row = table.addRow();
@@ -51,8 +51,8 @@ void saveMetricsToFile(ArrayList<MetricRow> metrics, UUID gameId, String name) {
         row.setString("gameId", m.gameId.toString());
         row.setString("timestamp", String.valueOf(System.currentTimeMillis()));
 
-        for (HashMap.Entry<String,Float> e : m.metrics.entrySet())
-            row.setFloat(e.getKey(), e.getValue());
+        for (HashMap.Entry<String,Long> e : m.metrics.entrySet())
+            row.setString(e.getKey(), String.valueOf(e.getValue()));
     }
 
     saveTable(table, "export/" + name + "-metrics-" + gameId.toString() + ".csv");
