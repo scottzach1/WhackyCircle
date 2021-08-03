@@ -79,3 +79,5 @@ class ScoreBoard {
         saveJSONObject(this.toJson(), "data/" + filename) ;
     }
 }
+
+ScoreBoard scoreboard;
