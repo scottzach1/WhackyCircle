@@ -42,7 +42,7 @@ ScoreEntry scoreEntryFromJson(JSONObject json) {
 
 ScoreBoard scoreBoardFromJson(JSONObject json) {
     if (json == null) {
-        println("ScoreEntry was of invalid JSON syntax, received NULL.");
+        println("ScoreBoard was of invalid JSON syntax, received NULL.");
         return null;
     }
 
