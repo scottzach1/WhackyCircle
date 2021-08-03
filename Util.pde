@@ -6,6 +6,14 @@
   return l;
 }
 
+<T> T[] toArray(ArrayList<T> list) {
+  T[] arr = (T[]) new Object[list.size()];
+
+  for (int i = 0; i < list.size(); ++i) arr[i] = list.get(i);
+
+  return arr;
+}
+
 boolean inBoundsIncl(int val, int lower, int upper) {
   return lower <= val && val <= upper;
 }
