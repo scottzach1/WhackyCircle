@@ -1,7 +1,8 @@
 abstract class TestVisitor {
-    abstract void acceptTest1(Test1 test);
-    abstract void acceptTest2(Test2 test);
-    abstract void acceptTest3(Test3 test);
+    abstract Float acceptTest1(Test1 test);
+    abstract Float acceptTest2(Test2 test);
+    abstract Float acceptTest3(Test3 test);
+    abstract String metricKey();
 
     void acceptPhase(Phase p) {
         for (Test t : p.getTests()) t.accept(this);
@@ -38,8 +39,11 @@ interface SumFunc<T> {
 
 class AverageDistanceFromCenter extends TestVisitor {
 
+    String metricKey() {
+        return "AverageDistance";
+    }
 
-    void acceptTest1(Test1 test) {
+    Float acceptTest1(Test1 test) {
         SumFunc<Float> func = new SumFunc<Float>() {
             public Float apply(Test.Result r, Float sum) { return sum + r.getDist(); }
         };
@@ -47,20 +51,25 @@ class AverageDistanceFromCenter extends TestVisitor {
         float totalDist = sumResults(test.getResults(), func, 0f);
         float avgDist = totalDist / test.getResults().size();
 
-        println("AVG DISTANCE: " + avgDist);
+        return avgDist;
     }
 
-    void acceptTest2(Test2 test) {
+    Float acceptTest2(Test2 test) {
         // TODO(zaci): Implement Me
+        return -1f;
     }
-    void acceptTest3(Test3 test) {
+    Float acceptTest3(Test3 test) {
         // TODO(zaci): Implement Me
+        return -1f;
     }
 }
 
 class TimeToClickVisitor extends TestVisitor {
-    
-    void acceptTest1(Test1 test) {
+    String metricKey() {
+        return "TimeToClick";
+    }
+
+    Float acceptTest1(Test1 test) {
         SumFunc<Float> func = new SumFunc<Float>() {
             public Float apply(Test.Result r, Float sum) {
                 return sum + r.timeToClick();
@@ -69,13 +78,15 @@ class TimeToClickVisitor extends TestVisitor {
         float totalTimeToClick = sumResults(test.getResults(), func, 0f);
         float avgTimeToClick = totalTimeToClick / test.getResults().size();
 
-        println("AVG FITTZ: " + avgTimeToClick + "s");
+        return avgTimeToClick;
     }
 
-    void acceptTest2(Test2 test) {
+    Float acceptTest2(Test2 test) {
         // TODO(zaci): Implement Me
+        return -1f;
     }
-    void acceptTest3(Test3 test) {
+    Float acceptTest3(Test3 test) {
         // TODO(zaci): Implement Me
+        return -1f;
     }
 }

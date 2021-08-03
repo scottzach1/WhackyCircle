@@ -25,7 +25,7 @@ abstract class Test {
     this.initialize(); // Method to generate shapes for this test.
   }
 
-  public abstract void accept(TestVisitor visitor); 
+  public abstract float accept(TestVisitor visitor); 
 
   // Implement in solid classes
   public void initialize() {
@@ -206,21 +206,21 @@ class Test1 extends Test {
   protected void preDrawSetup() {
   }
 
-  public void accept(TestVisitor visitor) {
-    visitor.acceptTest1(this);
+  public float accept(TestVisitor visitor) {
+    return visitor.acceptTest1(this);
   }
 }
 
 class Test2 extends Test {
   // TODO(any): Implement Me
-  public void accept(TestVisitor visitor) {
-    visitor.acceptTest2(this);
+  public float accept(TestVisitor visitor) {
+    return visitor.acceptTest2(this);
   }
 }
 
 class Test3 extends Test {
   // TODO(any): Implement Me
-  public void accept(TestVisitor visitor) {
-    visitor.acceptTest3(this);
+  public float accept(TestVisitor visitor) {
+    return visitor.acceptTest3(this);
   }
 }
