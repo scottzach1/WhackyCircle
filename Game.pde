@@ -34,7 +34,8 @@ class Game {
   }
 
   class AssetLoader extends Thread {
-    public void run() { 
+    public void run() {
+      sb = importScoreBoard();
       centerMouse = loadImage("cm.png");
     }
   }

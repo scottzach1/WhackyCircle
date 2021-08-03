@@ -13,8 +13,6 @@ void setup() {
   surface.setResizable(true);
   game.initialize();
 
-  sb = importScoreBoard();
-
   ArrayList<MetricRow> metrics = loadMetrics("metrics.csv");
   saveMetrics(metrics);
 }

@@ -194,7 +194,7 @@ class Rules extends UserInterfaceComponent {
  Highscore is used to present players with the top ten scores. 
  */
 class HighScore extends UserInterfaceComponent {
-  private HighScoreLoader hsl;
+  private HighScoreLoader hsl;  
 
   protected void generateChildren() {
     BulletParagraph bp = new BulletParagraph(new String[]{"Loading high scores..."}, true);
@@ -203,26 +203,6 @@ class HighScore extends UserInterfaceComponent {
     this.children.add(back);
     hsl = new HighScoreLoader();
     hsl.start();
-  }
-
-  class HighScoreLoader extends Thread {
-    public BulletParagraph bp;
-
-    public void run(){
-      bp = new BulletParagraph(getHighScores(), true);
-    }
-  }
-
-  private String[] getHighScores() {
-    ArrayList<String> highScores = new ArrayList();
-    ScoreBoard scoreBoard = importScoreBoard();
-    ArrayList<ScoreEntry> highScoreEntries = scoreBoard.highScores;
-    for (ScoreEntry se : highScoreEntries){
-      highScores.add(se.name + " : " + se.score);
-    }
-    String[] strs = new String[highScores.size()];
-    for(int i = 0; i < highScores.size(); ++i) strs[i] = highScores.get(i);
-    return strs; 
   }
 
   public boolean within() {
@@ -248,13 +228,58 @@ class HighScore extends UserInterfaceComponent {
   }
 
   public void render() {
-    if (((BulletParagraph)this.children.get(0)).text[0].equals("Loading high scores..."))
-    if (hsl != null && hsl.bp != null) this.children.set(0, hsl.bp);
-
     background(55);
     renderTitle();
     for (int i = 0; i < this.children.size(); ++i) {
       this.children.get(i).render();
+    }
+    if (hsl.update()){
+      this.children.set(0, new BulletParagraph(hsl.getContents(), true));
+    }
+  }
+
+  class HighScoreLoader extends Thread {
+    private boolean update = false;
+    private String[] contents;
+    private ArrayList<String> oldHighScores = new ArrayList();
+
+    public void run(){
+
+      while(!this.isInterrupted()){
+        boolean u = false;
+        
+        if (sb == null) continue;
+        
+        ArrayList<String> highScores = new ArrayList();
+        ArrayList<ScoreEntry> highScoreEntries = new ArrayList(sb.highScores);
+        
+        for (ScoreEntry se : highScoreEntries){
+          highScores.add(se.name + " : " + se.score);
+        }
+
+        if (highScores.size() > oldHighScores.size())
+          u = true;
+        else
+          for (int i = 0; i < highScores.size(); ++i)
+            if (!highScores.get(i).equals(oldHighScores.get(i))){ u = true; break; }
+
+        if (u) {
+          oldHighScores = highScores;
+          contents = new String[oldHighScores.size()];
+          for(int i = 0; i < oldHighScores.size(); ++i) contents[i] = oldHighScores.get(i);
+          update = true;
+        }
+      }
+    }
+
+    public boolean update(){
+      boolean oldUpdate = update;
+      update = false;
+      return oldUpdate;
+    }
+
+    public String[] getContents(){
+      return contents;
     }
   }
 
