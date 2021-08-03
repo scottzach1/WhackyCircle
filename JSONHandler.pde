@@ -25,10 +25,12 @@ public JSONObject scoreEntryToJson(ScoreEntry s) {
 
 JSONObject scoreBoardToJson(ScoreBoard s) {
     JSONArray jsonHighScores = new JSONArray();
-    for (int i=0; i<s.highScores.size(); ++i) jsonHighScores.setJSONObject(i, s.highScores.get(i).toJson());
+    for (int i=0; i<s.highScores.size(); ++i) 
+        jsonHighScores.setJSONObject(i, scoreEntryToJson(s.highScores.get(i)));
 
     JSONArray jsonAllScores = new JSONArray();
-    for (int i=0; i<s.allScores.size(); ++i) jsonAllScores.setJSONObject(i, s.allScores.get(i).toJson());
+    for (int i=0; i<s.allScores.size(); ++i) 
+        jsonAllScores.setJSONObject(i, scoreEntryToJson(s.allScores.get(i)));
 
     JSONObject json = new JSONObject();
     json.setJSONArray("highScores", jsonHighScores);

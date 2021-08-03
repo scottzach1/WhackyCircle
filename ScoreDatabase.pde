@@ -19,11 +19,6 @@ class ScoreEntry {
     public String toString() {
         return "{name=" + name + ", score=" + score + ", timestamp=" + timestamp + "}";
     }
-
-    @Override
-    public int compareTo(ScoreEntry other) {
-        return this.score - other.score;
-    }
 }
 
 class ScoreBoard {
@@ -48,35 +43,39 @@ class ScoreBoard {
             if (highScores.get(i).name != score.name) continue;
 
             userIndex = i;
-            break ;
+            break;
         }
 
         if (userIndex != -1) {
             if (score.score > highScores.get(userIndex).score) 
                 highScores.remove(userIndex);
-            else return;
+            else return false;
         }
-
-        for (int i=0; i<highScores.size()-1, ++i) {
+        
+        boolean added = false;
+        for (int i=0; i<highScores.size()-1; ++i) {
             ScoreEntry entry = highScores.get(i);
             ScoreEntry entry2 = highScores.get(i+1);
             
             if (inBoundsIncl(score.score, entry.score, entry2.score)) {
                 highScores.add(i + 1, score);
-                return;
+                added = true;
+                break;
             }
         }
 
-        if (highScores.size() < 10) highScores.add(score);
+        if (added && highScores.size() < 10) highScores.add(score);
+
         while (highScores.size() > 10) highScores.remove(highScores.size() - 1);
+        return added;
     }
 
     void save() {
-        export("scoreboard.json");
+        save("scoreboard.json");
     }
 
     void save(String filename) {
-        saveJSONObject(this.toJson(), "data/" + filename) ;
+        saveJSONObject(scoreBoardToJson(this), "data/" + filename) ;
     }
 }
 

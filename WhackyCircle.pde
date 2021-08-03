@@ -16,7 +16,7 @@ void setup() {
   game.initialize();
 
   ScoreBoard scores = importScoreBoard();
-  scores.export();
+  scores.save();
 
   ArrayList<MetricRow> metrics = loadMetrics("metrics.csv");
   saveMetrics(metrics);
