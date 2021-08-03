@@ -29,36 +29,11 @@ class MetricRow {
 
 }
 
-// ArrayList<MetricRow> loadMetrics() {
-//     return loadMetrics("metrics.csv");
-// }
-
-// ArrayList<MetricRow> loadMetrics(String filename) {
-//     Table table = loadTable("data/" + filename, "header");
-
-//     ArrayList<MetricRow> metrics = new ArrayList();
-
-//     for (TableRow row : table.rows()) {
-
-//         metrics.add(
-//             new MetricRow(
-//                 row.getString("name"),
-//                 row.getInt("phase"),
-//                 row.getFloat("timeToClick"),
-//                 UUID.fromString(row.getString("gameId")),
-//                 Long.valueOf(row.getString("timestamp"))
-//             )
-//         );
-//     }
-//     return metrics;
-// }
-
 void saveMetricsToFile(ArrayList<MetricRow> metrics, UUID gameId, String name) {
     Table table = new Table();
 
     table.addColumn("name", Table.STRING);
     table.addColumn("phase", Table.INT);
-    table.addColumn("timeToClick", Table.FLOAT);
     table.addColumn("gameId", Table.STRING);
     table.addColumn("timestamp", Table.STRING);
 
@@ -80,7 +55,7 @@ void saveMetricsToFile(ArrayList<MetricRow> metrics, UUID gameId, String name) {
             row.setFloat(e.getKey(), e.getValue());
     }
 
-    saveTable(table, "export/" + name + "-metrics" + gameId.toString() + ".csv");
+    saveTable(table, "export/" + name + "-metrics-" + gameId.toString() + ".csv");
 }
 
 // ======================================================================

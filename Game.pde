@@ -146,7 +146,7 @@ class Game {
 
     int phaseId = -1;
     for (Phase p: phases) {
-      MetricRow metric = new MetricRow("bob", ++phaseId, uuid);
+      MetricRow metric = new MetricRow("zaci", ++phaseId, uuid);
 
       for (TestVisitor v: visitors) {
         String metricKey = v.metricKey();
@@ -160,8 +160,8 @@ class Game {
       metrics.add(metric);
     }
 
-    saveMetricsToFile(metrics, uuid, "bob");
-    saveGamePaths(phases, uuid, "bob");
+    saveMetricsToFile(metrics, uuid, "zaci");
+    saveGamePaths(phases, uuid, "zaci");
     initialize();
     gameState = GameState.MAIN_MENU;
   }
