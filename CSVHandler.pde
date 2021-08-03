@@ -125,7 +125,7 @@ UUID saveGamePaths(ArrayList<Phase> phases, UUID gameId) {
                     TableRow row = table.addRow();
 
                     row.setString("gameId", gameId.toString());
-                    row.setInt("phase", pathId);
+                    row.setInt("phase", phaseId);
                     row.setInt("result", resultId);
                     row.setInt("path", pathId);
                     row.setString("timestamp", String.valueOf(t));
