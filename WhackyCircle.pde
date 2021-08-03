@@ -4,7 +4,7 @@ ScoreBoard sb;
 
 
 void settings() {
-  size(displayWidth / 2, displayHeight / 2);
+  size(Math.max(displayWidth / 2, 1400), Math.max(displayHeight / 2, 700));
 }
 
 void setup() {
