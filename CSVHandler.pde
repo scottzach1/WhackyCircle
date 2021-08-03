@@ -132,5 +132,7 @@ UUID saveGamePaths(ArrayList<Phase> phases, UUID gameId) {
         } // test
     } // phase (that was a few!)
 
+    saveTable(table, "export/game-" + gameId.toString() + ".csv");
+
     return gameId;
 }
