@@ -6,7 +6,7 @@ class ScoreKeeper{
   // Helpers for bounding box
   // Everything bases on font size
   private float fontSize = 35;
-  private float rectW = fontSize * 8;
+  private float rectW = fontSize * 10;
   private float rectH = fontSize * 3;
   private float rectL = width - rectW - 20;
   private float rectT = 20;
@@ -48,5 +48,9 @@ class ScoreKeeper{
   
   public ArrayList<Integer> getPhaseScores() {
     return new ArrayList(phaseScores);
+  }
+
+  public int getOverallScore(){
+    return overallScore;
   }
 }

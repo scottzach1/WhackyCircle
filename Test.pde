@@ -103,9 +103,9 @@ abstract class Test {
     
     if (s.hasBeenClicked() || (millis() - avoidanceSince) > (shapeAvoidanceSec)) {
       nextResult();
+      game.getScore().updateScore(results.get(resultIndex - 1).getScore());
       playerReady = false;
       ++shapeIndex;
-      game.getScore().updateScore(1); //TODO (Harri) update proportionate to TimeToClick
     }
   }
 
@@ -164,6 +164,21 @@ abstract class Test {
 
     public float getDist(){
       return mouse.distanceFrom(shape.p);
+    }
+
+    public int getScore(){
+      float distToCenter = shape.p.distanceFrom(new Point(mouseX, mouseY));
+
+      float dist = getDist();
+      float time = path.get(path.size()-1).left - path.get(0).left;
+      float velocity = dist/(time/1000); // Pixels per second
+
+      if (distToCenter == 0) distToCenter = 0.01;
+      float points = velocity / (distToCenter * 10);
+      points = Math.round(points);
+      if (shape instanceof Square && shape.hasBeenClicked()) points = -points;
+      else if (shape instanceof Square) points += 7;
+      return (int) points;
     }
 
     public Shape getShape(){
@@ -293,8 +308,8 @@ class Test4 extends Test {
      fill(circle.c);
      circle.render();
      
-     if(circle.p.x < 0 || circle.p.x > displayWidth) circle.directionX *= -1;
-     if(circle.p.y < 0 || circle.p.y > displayHeight) circle.directionY *= -1;
+     if(circle.p.x < 0 || circle.p.x > width) circle.directionX *= -1;
+     if(circle.p.y < 0 || circle.p.y > height) circle.directionY *= -1;
 
      update.add(new MovingCircle(circle.p.x + circle.directionX, circle.p.y + circle.directionY, circle.r, circle.directionX, circle.directionY, circle.c));
    }

@@ -137,12 +137,36 @@ class Game {
     if (phaseIndex == phases.size()) gameState = GameState.GAME_FINISHED;
   }
 
+  private GameSaver gs = null;
+
   private void gameCompleteState() {
     println("Game Complete :party-parrot:");
-    saveMetrics();
-    initialize();
-    gameState = GameState.MAIN_MENU;
+    ui.toFinalScreen();
+    ui.render();
+    if (gs != null && gs.isDone()){
+      gs = null;
+      initialize();
+      gameState = GameState.MAIN_MENU;
+    } else if (gs == null){
+      gs = new GameSaver();
+      gs.start();
+    }
   }
+
+  class GameSaver extends Thread{
+    private boolean done = false;
+
+    @Override
+    public void run(){
+      saveMetrics();
+      done = true;
+    }
+
+    public boolean isDone(){
+      return done;
+    }
+  }
+
 
   private void saveMetrics() {
     TestVisitor[] visitors = {
@@ -159,7 +183,7 @@ class Game {
 
     int phaseId = -1;
     for (Phase p: phases) {
-      MetricRow metric = new MetricRow("zaci", ++phaseId, uuid);
+      MetricRow metric = new MetricRow(userName, ++phaseId, uuid);
 
       for (TestVisitor v: visitors) {
         String metricKey = v.metricKey();
@@ -173,7 +197,9 @@ class Game {
       metrics.add(metric);
     }
 
-    saveMetricsToFile(metrics, uuid, "zaci");
-    saveGamePaths(phases, uuid, "zaci");
+    sb.sumbitScore(new ScoreEntry(userName, score.getOverallScore()));
+    sb.save();
+    saveMetricsToFile(metrics, uuid, userName);
+    saveGamePaths(phases, uuid, userName);
   }
 }
