@@ -311,7 +311,7 @@ class Test4 extends Test {
      
     circles = new ArrayList();
     for(int i = 0; i < 6; i++) {
-      Point p = new Point(randomInt(0, displayWidth), randomInt(0, displayHeight));
+      Point p = new Point(randomInt(0, width), randomInt(0, height));
       c = color(randomInt(100, 255), randomInt(100, 255), randomInt(100, 255));
       int x = randomInt(-3,3);
       int y = randomInt(-3,3);
