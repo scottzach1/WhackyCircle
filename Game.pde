@@ -128,7 +128,7 @@ class Game {
     }
 
     p.execute();
-    score.displayScore();
+    score.displayScore(phaseIndex);
 
     if (p.completedTests()) {
       ++phaseIndex;

@@ -7,7 +7,7 @@ class ScoreKeeper{
   // Everything bases on font size
   private float fontSize = 35;
   private float rectW = fontSize * 10;
-  private float rectH = fontSize * 3;
+  private float rectH = fontSize * 4;
   private float rectL = width - rectW - 20;
   private float rectT = 20;
   
@@ -16,7 +16,7 @@ class ScoreKeeper{
     phaseScore = 0;
   }
   
-  public void displayScore() {
+  public void displayScore(int phaseIndex) {
     rectMode(CORNER);
     fill(175);
     stroke(245);
@@ -27,8 +27,9 @@ class ScoreKeeper{
     fill(75);
     textAlign(CORNER);
     textFont(createFont(FONT, fontSize));
-    text("Game Score:   " + overallScore, rectL + 10, rectT + (fontSize + 10));
-    text("Phase Score:  " + phaseScore, rectL + 10, rectT + (fontSize + 10) * 2); // *2 because second line.
+    text("Phase: " + phaseIndex, rectL + 10, rectT + (fontSize + 10));
+    text("Game Score:   " + overallScore, rectL + 10, rectT + (fontSize + 10) * 2);
+    text("Phase Score:  " + phaseScore, rectL + 10, rectT + (fontSize + 10) * 3); // *2 because second line.
     fill(210);
   }
   
