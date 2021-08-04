@@ -34,6 +34,18 @@ abstract class Phase {
   }
 }
 
+class Phase0 extends Phase {
+  
+  public void initialize() {
+    Test[] ts = {new Test0()};
+    
+    this.tests = toList(ts);
+    
+    for (Test t : this.tests) t.initialize();
+  }
+  
+}
+
 class Phase1 extends Phase {
   
   public void initialize() {

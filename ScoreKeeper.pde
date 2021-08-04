@@ -16,7 +16,7 @@ class ScoreKeeper{
     phaseScore = 0;
   }
   
-  public void displayScore() {
+  public void displayScore(int phaseIndex) {
     rectMode(CORNER);
     fill(175);
     stroke(245);
@@ -28,7 +28,7 @@ class ScoreKeeper{
     textAlign(CORNER);
     textFont(createFont(FONT, fontSize));
     text("Game Score:   " + overallScore, rectL + 10, rectT + (fontSize + 10));
-    text("Phase Score:  " + phaseScore, rectL + 10, rectT + (fontSize + 10) * 2); // *2 because second line.
+    text("Phase #" + phaseIndex + " Score:  " + phaseScore, rectL + 10, rectT + (fontSize + 10) * 2); // *2 because second line.
     fill(210);
   }
   
