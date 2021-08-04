@@ -173,6 +173,7 @@ abstract class Test {
       float time = path.get(path.size()-1).left - path.get(0).left;
       float velocity = dist/(time/1000); // Pixels per second
 
+      if (distToCenter == 0) distToCenter = 0.01;
       float points = velocity / (distToCenter * 10);
       points = Math.round(points);
       if (shape instanceof Square) points = -points;
