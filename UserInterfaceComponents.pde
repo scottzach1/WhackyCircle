@@ -153,15 +153,16 @@ class Rules extends UserInterfaceComponent {
 
   protected void generateChildren() {
     BulletParagraph bp = new BulletParagraph(new String[]{
-      "Each game is made up of several phases,", 
-      "with each phase having some slight variation", 
-      "from the last. At the start of a game hold", 
-      "your mouse in the centre of the screen (indicated", 
-      "by the white circle with a cursor and timer image.", 
-      "After some period of time, the center circle will", 
-      "disappear, and another circle will be on screen.", 
-      "Your task, is to try click this appearing circle", 
-      "as fast as possible.", 
+      "This game has multiple phases.", 
+      "Each phase builds on the last and gets slightly harder.", 
+      "For each phase, begin by moving your mouse to the", 
+      "centre of the screen (indicated by the white circle", 
+      "with a cursor and timer image). After some time, ", 
+      "the centre circle will disappear and a different", 
+      "object will appear.  Your task is to quickly click", 
+      "the newly appeared grey circle; But be careful,", 
+      "do not click on squares, and don't", 
+      "get distracted by the floating coloured orbs."
       }, false);
     Button back = new Button(new Point(width / 2, height - 100), new Point(width / 3, 75), color(145, 145, 145), color(102, 207, 255, 50), "MAIN MENU");
     this.children.add(bp);
@@ -215,10 +216,10 @@ class Rules extends UserInterfaceComponent {
  Highscore is used to present players with the top ten scores. 
  */
 class HighScore extends UserInterfaceComponent {
-  private HighScoreLoader hsl;  
-
+  HighScoreLoader hsl;
+  BulletParagraph bp;
   protected void generateChildren() {
-    BulletParagraph bp = new BulletParagraph(new String[]{"Loading high scores..."}, true);
+    bp = new BulletParagraph(new String[]{"Loading high scores..."}, true);
     Button back = new Button(new Point(width / 2, height - 100), new Point(width / 3, 75), color(145, 145, 145), color(102, 207, 255, 50), "MAIN MENU");
     this.children.add(bp);
     this.children.add(back);
@@ -258,8 +259,8 @@ class HighScore extends UserInterfaceComponent {
     for (int i = 0; i < this.children.size(); ++i) {
       this.children.get(i).render();
     }
-    if (hsl.update()) {
-      this.children.set(0, new BulletParagraph(hsl.getContents(), true));
+    if (hsl != null && hsl.update) {
+      bp.updateText(hsl.getContents());
     }
   }
 
@@ -340,10 +341,9 @@ class FinalGameScreen extends UserInterfaceComponent {
   protected GameState onClick() {
     if (cs.size() == 3)
       for (int i = 0; i < this.children.size(); ++i)
-        if (this.children.get(i).within()){
+        if (this.children.get(i).within()) {
           userName = "";
           for (Character c : cs) userName += c;
-        println(userName);
           return this.children.get(i).onClick();
         }
     return GameState.GAME_FINISHED;
@@ -357,7 +357,6 @@ class FinalGameScreen extends UserInterfaceComponent {
       if (cs.size() == 3) {
         userName = "";
         for (Character ch : cs) userName += ch;
-        println(userName);
         game.gameState = GameState.GAME_COMPLETE;
       }
     } else if (c == '-') {
@@ -414,7 +413,7 @@ class FinalGameScreen extends UserInterfaceComponent {
     text("Phase Scores: ", 20, 300);
     textFont(createFont(FONT_SMALL, height / 14));
     ArrayList<Integer> phaseScores = game.getScore().getPhaseScores();
-    for (int i = 0; i < phaseScores.size(); ++i){
+    for (int i = 0; i < phaseScores.size(); ++i) {
       int curPhaseScore = phaseScores.get(i);
       text("Phase " + (i + 1) + ": " + curPhaseScore, 40, 300 + (((height / 14) + 20) * (i + 1)));
     }
@@ -513,7 +512,7 @@ class Button extends UserInterfaceComponent {
  displayed paragraph.
  */
 class BulletParagraph extends UserInterfaceComponent {
-  public final String[] text;
+  public String[] text;
   private Point pos = new Point(width/2, height/2 + 20), size = new Point(width*2/3, height / 2);
   private int scrollFactor = 0;
   private boolean numberedPoints;
@@ -534,6 +533,10 @@ class BulletParagraph extends UserInterfaceComponent {
       else break;
     }
     tSize = Math.min((size.y / 6), tSize);
+  }
+
+  public void updateText(String[] t) {
+    this.text = t;
   }
 
   public boolean within() {

@@ -26,8 +26,7 @@ class Game {
 
     // Reset Phases
     phaseIndex = 0;
-    Phase[] phs = {new Phase1()};
-    //, new Phase2(), new Phase3(), new Phase4()
+    Phase[] phs = {new Phase1(), new Phase2(), new Phase3(), new Phase4()};
     phases = toList(phs);
     for (Phase ph: phases) ph.initialize();
 
@@ -184,7 +183,7 @@ class Game {
 
     int phaseId = -1;
     for (Phase p: phases) {
-      MetricRow metric = new MetricRow("zaci", ++phaseId, uuid);
+      MetricRow metric = new MetricRow(userName, ++phaseId, uuid);
 
       for (TestVisitor v: visitors) {
         String metricKey = v.metricKey();
@@ -200,7 +199,7 @@ class Game {
 
     sb.sumbitScore(new ScoreEntry(userName, score.getOverallScore()));
     sb.save();
-    saveMetricsToFile(metrics, uuid, "zaci");
-    saveGamePaths(phases, uuid, "zaci");
+    saveMetricsToFile(metrics, uuid, userName);
+    saveGamePaths(phases, uuid, userName);
   }
 }

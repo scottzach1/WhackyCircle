@@ -1,6 +1,16 @@
 {
   "highScores": [
     {
+      "score": 29,
+      "name": "HBC",
+      "timestamp": "1628041584231"
+    },
+    {
+      "score": 22,
+      "name": "hbc",
+      "timestamp": "1628041903022"
+    },
+    {
       "score": 20,
       "name": "jkr",
       "timestamp": "1628040648648"
@@ -31,6 +41,16 @@
       "score": 20,
       "name": "jkr",
       "timestamp": "1628040648648"
+    },
+    {
+      "score": 29,
+      "name": "HBC",
+      "timestamp": "1628041584231"
+    },
+    {
+      "score": 22,
+      "name": "hbc",
+      "timestamp": "1628041903022"
     }
   ]
 }
