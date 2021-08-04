@@ -308,8 +308,8 @@ class Test4 extends Test {
      fill(circle.c);
      circle.render();
      
-     if(circle.p.x < 0 || circle.p.x > displayWidth) circle.directionX *= -1;
-     if(circle.p.y < 0 || circle.p.y > displayHeight) circle.directionY *= -1;
+     if(circle.p.x < 0 || circle.p.x > width) circle.directionX *= -1;
+     if(circle.p.y < 0 || circle.p.y > height) circle.directionY *= -1;
 
      update.add(new MovingCircle(circle.p.x + circle.directionX, circle.p.y + circle.directionY, circle.r, circle.directionX, circle.directionY, circle.c));
    }

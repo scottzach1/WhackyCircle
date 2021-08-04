@@ -1,6 +1,11 @@
 {
   "highScores": [
     {
+      "score": 79,
+      "name": "lck",
+      "timestamp": "1628044576144"
+    },
+    {
       "score": 29,
       "name": "HBC",
       "timestamp": "1628041584231"
@@ -51,6 +56,11 @@
       "score": 22,
       "name": "hbc",
       "timestamp": "1628041903022"
+    },
+    {
+      "score": 79,
+      "name": "lck",
+      "timestamp": "1628044576144"
     }
   ]
 }
