@@ -5,8 +5,8 @@
  */
 final String FONT =  "FiraSansCondensed-Bold.ttf";
 final String FONT_SMALL =  "FiraSansCondensed-Light.ttf";
+public String userName = "";
 abstract class UserInterfaceComponent {
-  public String userName = "";
   protected ArrayList<UserInterfaceComponent> children;
 
   UserInterfaceComponent() {
@@ -296,6 +296,9 @@ class HighScore extends UserInterfaceComponent {
           contents = new String[oldHighScores.size()];
           for (int i = 0; i < oldHighScores.size(); ++i) contents[i] = oldHighScores.get(i);
           update = true;
+        } else if (highScores.size() == oldHighScores.size() && contents == null) {
+          contents = new String[]{"No High Scores"};
+          update = true;
         }
       }
     }
@@ -337,8 +340,12 @@ class FinalGameScreen extends UserInterfaceComponent {
   protected GameState onClick() {
     if (cs.size() == 3)
       for (int i = 0; i < this.children.size(); ++i)
-        if (this.children.get(i).within())
+        if (this.children.get(i).within()){
+          userName = "";
+          for (Character c : cs) userName += c;
+        println(userName);
           return this.children.get(i).onClick();
+        }
     return GameState.GAME_FINISHED;
   }
 
@@ -348,6 +355,9 @@ class FinalGameScreen extends UserInterfaceComponent {
   protected void onKey(Character c) {
     if (c == '`') {
       if (cs.size() == 3) {
+        userName = "";
+        for (Character ch : cs) userName += ch;
+        println(userName);
         game.gameState = GameState.GAME_COMPLETE;
       }
     } else if (c == '-') {
@@ -394,9 +404,21 @@ class FinalGameScreen extends UserInterfaceComponent {
 
   private void renderChars() {
     textAlign(CENTER, CENTER);
-    textFont(createFont(FONT_SMALL, height / 8));
+    textFont(createFont(FONT_SMALL, height / 10));
     fill(0);
-    text("Enter your initials:", width / 2, 250);
+    text("Your Score: " + game.getScore().getOverallScore(), width / 2, 225);
+    text("Enter your initials:", width / 2, 300);
+
+    textAlign(LEFT);
+    textFont(createFont(FONT_SMALL, height / 12));
+    text("Phase Scores: ", 20, 300);
+    textFont(createFont(FONT_SMALL, height / 14));
+    ArrayList<Integer> phaseScores = game.getScore().getPhaseScores();
+    for (int i = 0; i < phaseScores.size(); ++i){
+      int curPhaseScore = phaseScores.get(i);
+      text("Phase " + (i + 1) + ": " + curPhaseScore, 40, 300 + (((height / 14) + 20) * (i + 1)));
+    }
+    textAlign(CENTER, CENTER);
 
     // Chars
     int rectSize = height/6;
@@ -506,6 +528,7 @@ class BulletParagraph extends UserInterfaceComponent {
     textFont(createFont(FONT_SMALL, tSize));
     tSize = 5;
     while (tSize < 1000) {
+      if (t.length == 0) break;
       textFont(createFont(FONT_SMALL, tSize));
       if (textWidth(longestText) < size.x) tSize++;
       else break;

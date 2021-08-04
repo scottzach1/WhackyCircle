@@ -1,155 +1,36 @@
 {
   "highScores": [
     {
-      "score": 73,
-      "name": "Zaci",
-      "timestamp": "1627970157132"
+      "score": 20,
+      "name": "jkr",
+      "timestamp": "1628040648648"
     },
     {
-      "score": 43,
-      "name": "Harri",
-      "timestamp": "1627970157132"
-    },
-    {
-      "score": 43,
-      "name": "Luisa",
-      "timestamp": "1627970157132"
-    }],
+      "score": 6,
+      "name": "usu",
+      "timestamp": "1628040610787"
+    }
+  ],
   "allScores": [
     {
-      "score": 73,
-      "name": "Zaci",
-      "timestamp": "1627970157132"
+      "score": 14,
+      "name": "jkr",
+      "timestamp": "1628040581355"
     },
     {
-      "score": 43,
-      "name": "Harri",
-      "timestamp": "1627970157132"
+      "score": 6,
+      "name": "usu",
+      "timestamp": "1628040610787"
     },
     {
-      "score": 43,
-      "name": "Luisa",
-      "timestamp": "1627970157132"
+      "score": 9,
+      "name": "jkr",
+      "timestamp": "1628040629917"
     },
     {
-      "score": 77,
-      "name": "Harri",
-      "timestamp": "1627970157132"
-    },
-    {
-      "score": 50,
-      "name": "Harri",
-      "timestamp": "1627970157132"
-    },
-    {
-      "score": 45,
-      "name": "Zaci",
-      "timestamp": "1627970157132"
-    },
-    {
-      "score": 72,
-      "name": "Luisa",
-      "timestamp": "1627970157132"
-    },
-    {
-      "score": 42,
-      "name": "Luisa",
-      "timestamp": "1627970157132"
-    },
-    {
-      "score": 42,
-      "name": "Zaci",
-      "timestamp": "1627970157132"
-    },
-    {
-      "score": 32,
-      "name": "Jack",
-      "timestamp": "1627988966477"
-    },
-    {
-      "score": 75,
-      "name": "Henry",
-      "timestamp": "1627988966477"
-    },
-    {
-      "score": 32,
-      "name": "Jack",
-      "timestamp": "1627989179413"
-    },
-    {
-      "score": 75,
-      "name": "Henry",
-      "timestamp": "1627989179413"
-    },
-    {
-      "score": 32,
-      "name": "Jack",
-      "timestamp": "1627989764220"
-    },
-    {
-      "score": 75,
-      "name": "Henry",
-      "timestamp": "1627989764220"
-    },
-    {
-      "score": 32,
-      "name": "Jack",
-      "timestamp": "1627989784121"
-    },
-    {
-      "score": 75,
-      "name": "Henry",
-      "timestamp": "1627989784121"
-    },
-    {
-      "score": 32,
-      "name": "Jack",
-      "timestamp": "1627989818767"
-    },
-    {
-      "score": 75,
-      "name": "Henry",
-      "timestamp": "1627989818767"
-    },
-    {
-      "score": 32,
-      "name": "Jack",
-      "timestamp": "1627989854243"
-    },
-    {
-      "score": 75,
-      "name": "Henry",
-      "timestamp": "1627989854243"
-    },
-    {
-      "score": 33,
-      "name": "Jack",
-      "timestamp": "1627989872918"
-    },
-    {
-      "score": 75,
-      "name": "Henry",
-      "timestamp": "1627989872918"
-    },
-    {
-      "score": 31,
-      "name": "Jack",
-      "timestamp": "1627989882611"
-    },
-    {
-      "score": 75,
-      "name": "Henry",
-      "timestamp": "1627989882611"
-    },
-    {
-      "score": 80,
-      "name": "Jack",
-      "timestamp": "1627989897151"
-    },
-    {
-      "score": 75,
-      "name": "Henry",
-      "timestamp": "1627989897151"
+      "score": 20,
+      "name": "jkr",
+      "timestamp": "1628040648648"
     }
   ]
 }

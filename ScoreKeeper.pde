@@ -49,4 +49,8 @@ class ScoreKeeper{
   public ArrayList<Integer> getPhaseScores() {
     return new ArrayList(phaseScores);
   }
+
+  public int getOverallScore(){
+    return overallScore;
+  }
 }

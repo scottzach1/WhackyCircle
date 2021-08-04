@@ -176,7 +176,8 @@ abstract class Test {
       if (distToCenter == 0) distToCenter = 0.01;
       float points = velocity / (distToCenter * 10);
       points = Math.round(points);
-      if (shape instanceof Square) points = -points;
+      if (shape instanceof Square && shape.hasBeenClicked()) points = -points;
+      else if (shape instanceof Square) points += 7;
       return (int) points;
     }
 

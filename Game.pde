@@ -26,7 +26,8 @@ class Game {
 
     // Reset Phases
     phaseIndex = 0;
-    Phase[] phs = {new Phase1(), new Phase2(), new Phase3(), new Phase4()};
+    Phase[] phs = {new Phase1()};
+    //, new Phase2(), new Phase3(), new Phase4()
     phases = toList(phs);
     for (Phase ph: phases) ph.initialize();
 
@@ -137,12 +138,36 @@ class Game {
     if (phaseIndex == phases.size()) gameState = GameState.GAME_FINISHED;
   }
 
+  private GameSaver gs = null;
+
   private void gameCompleteState() {
     println("Game Complete :party-parrot:");
-    saveMetrics();
-    initialize();
-    gameState = GameState.MAIN_MENU;
+    ui.toFinalScreen();
+    ui.render();
+    if (gs != null && gs.isDone()){
+      gs = null;
+      initialize();
+      gameState = GameState.MAIN_MENU;
+    } else if (gs == null){
+      gs = new GameSaver();
+      gs.start();
+    }
   }
+
+  class GameSaver extends Thread{
+    private boolean done = false;
+
+    @Override
+    public void run(){
+      saveMetrics();
+      done = true;
+    }
+
+    public boolean isDone(){
+      return done;
+    }
+  }
+
 
   private void saveMetrics() {
     TestVisitor[] visitors = {
@@ -173,6 +198,8 @@ class Game {
       metrics.add(metric);
     }
 
+    sb.sumbitScore(new ScoreEntry(userName, score.getOverallScore()));
+    sb.save();
     saveMetricsToFile(metrics, uuid, "zaci");
     saveGamePaths(phases, uuid, "zaci");
   }
