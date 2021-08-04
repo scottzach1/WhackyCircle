@@ -118,7 +118,7 @@ abstract class Test {
     if (resultIndex >= results.size()){
       avoidanceSince = Long.MAX_VALUE;
       centreSince = Long.MAX_VALUE;
-      if (!(this instanceof Test1)) {
+      if (!(this instanceof Test1) && !(this instanceof Test0)) {
         currentCenterHoldSec = randomInt(1000, 4000);
       }
       results.add(new Result());
@@ -229,6 +229,22 @@ abstract class Test {
 }
 
 ShapeBuilder builder = new ShapeBuilder();
+
+class Test0 extends Test {
+
+  // Implement in solid classes
+  public void initialize() {
+    this.shapes = builder.addType(ShapeType.CIRCLE).times(5).toList();
+  }
+
+  // Implement in solid classes  
+  protected void preDrawSetup() {
+  }
+
+  public Long accept(TestVisitor visitor) {
+    return visitor.acceptTest(this);
+  }
+}
 
 class Test1 extends Test {
 
