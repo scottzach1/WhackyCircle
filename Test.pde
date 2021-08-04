@@ -21,7 +21,7 @@ abstract class Test {
   private long centreSince = Long.MAX_VALUE;
   private long avoidanceSince = Long.MAX_VALUE;
 
-  private boolean playerReady = false; // TODO(lckrist): back to false when not testing
+  protected boolean playerReady = false; // TODO(lckrist): back to false when not testing
 
   public Test() {
     this.shapes = new ArrayList();
@@ -239,6 +239,13 @@ class Test0 extends Test {
 
   // Implement in solid classes  
   protected void preDrawSetup() {
+    textAlign(LEFT);
+    textFont(createFont(FONT, height / 12));
+    fill(200);
+    if (!this.playerReady)
+      text("Hold mouse in middle...", 100, 100);
+    else 
+      text("Quick, click the shape!", 100, 100);
   }
 
   public Long accept(TestVisitor visitor) {
