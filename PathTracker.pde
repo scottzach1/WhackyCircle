@@ -24,10 +24,7 @@ class PathTracker {
 
     public void run() {
       long time = System.currentTimeMillis();
-      while (true) {
-        if (this.isInterrupted()) {
-          break;
-        }
+      while (!this.isInterrupted()) {
         Long diff = System.currentTimeMillis() - time;
         if ((diff > 0) && (READS_PER_SEC <= 0 || diff % (1000 / READS_PER_SEC) == 0)) {
           time = System.currentTimeMillis();

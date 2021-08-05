@@ -1,6 +1,16 @@
 {
   "highScores": [
     {
+      "score": 225,
+      "name": "ABC",
+      "timestamp": "1628122997513"
+    },
+    {
+      "score": 171,
+      "name": "HBC",
+      "timestamp": "1628122753562"
+    },
+    {
       "score": 158,
       "name": "LCK",
       "timestamp": "1628047011312"
@@ -31,11 +41,6 @@
       "timestamp": "1628044576144"
     },
     {
-      "score": 29,
-      "name": "HBC",
-      "timestamp": "1628041584231"
-    },
-    {
       "score": 22,
       "name": "hbc",
       "timestamp": "1628041903022"
@@ -44,11 +49,6 @@
       "score": 20,
       "name": "jkr",
       "timestamp": "1628040648648"
-    },
-    {
-      "score": 6,
-      "name": "usu",
-      "timestamp": "1628040610787"
     }
   ],
   "allScores": [
@@ -141,6 +141,16 @@
       "score": 110,
       "name": "bbb",
       "timestamp": "1628056556196"
+    },
+    {
+      "score": 171,
+      "name": "HBC",
+      "timestamp": "1628122753562"
+    },
+    {
+      "score": 225,
+      "name": "ABC",
+      "timestamp": "1628122997513"
     }
   ]
 }

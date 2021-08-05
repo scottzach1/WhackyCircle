@@ -37,11 +37,13 @@ public float getTextSize(Point size, String str) {
  */
 class GameUserInterface extends UserInterfaceComponent {
   private int currentChild = 0;
+  HighScore high;
 
   protected void generateChildren() {
     UserInterfaceComponent menu = new MainMenu();
+    high = new HighScore();
     UserInterfaceComponent rule = new Rules();
-    UserInterfaceComponent high = new HighScore();
+    
     UserInterfaceComponent fins = new FinalGameScreen();
     this.children.add(menu);
     this.children.add(rule);
@@ -63,6 +65,10 @@ class GameUserInterface extends UserInterfaceComponent {
 
   public void toFinalScreen() { 
     currentChild = 3;
+  }
+
+  public void highScoreInterupt(){
+    high.interrupt();
   }
 
   public boolean within() {
@@ -226,6 +232,10 @@ class HighScore extends UserInterfaceComponent {
     hsl = new HighScoreLoader();
     hsl.start();
   }
+  
+  public void interrupt(){
+   hsl.interrupt(); 
+  }
 
   public boolean within() {
     return true;
@@ -258,6 +268,9 @@ class HighScore extends UserInterfaceComponent {
     renderTitle();
     for (int i = 0; i < this.children.size(); ++i) {
       this.children.get(i).render();
+    }
+    if (hsl.isInterrupted()){
+      hsl.start();
     }
     if (hsl != null && hsl.update) {
       bp.updateText(hsl.getContents());
@@ -367,7 +380,7 @@ class FinalGameScreen extends UserInterfaceComponent {
   }
 
   public void render() {
-    background(55);
+    background(50);
     renderTitle();
     if (game.gameState == GameState.GAME_COMPLETE) {
       renderDots();
@@ -382,14 +395,14 @@ class FinalGameScreen extends UserInterfaceComponent {
   private void renderTitle() {
     textAlign(CENTER, CENTER);
     textFont(createFont(FONT, height / 4));
-    fill(0);
+    fill(200);
     text("FINISHED", width / 2, 100);
   }
 
   private void renderDots() {
     textAlign(CENTER, CENTER);
     textFont(createFont(FONT, height / 4));
-    fill(0);
+    fill(200);
     String str = "";
     for (int i = 0; i < dots; ++i) {
       str += ".";
@@ -404,7 +417,7 @@ class FinalGameScreen extends UserInterfaceComponent {
   private void renderChars() {
     textAlign(CENTER, CENTER);
     textFont(createFont(FONT_SMALL, height / 10));
-    fill(0);
+    fill(200);
     text("Your Score: " + game.getScore().getOverallScore(), width / 2, 225);
     text("Enter your initials:", width / 2, 300);
 
@@ -421,7 +434,6 @@ class FinalGameScreen extends UserInterfaceComponent {
 
     // Chars
     int rectSize = height/6;
-    fill(100);
     rectMode(CENTER);
     textFont(createFont(FONT, rectSize));
     for (int i = 0; i < 3; i++) {

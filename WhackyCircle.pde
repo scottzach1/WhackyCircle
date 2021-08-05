@@ -18,3 +18,8 @@ void draw() {
   clear();
   game.execute();
 }
+
+void exit(){
+  game.stop();
+  super.exit();
+}

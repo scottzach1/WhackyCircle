@@ -119,6 +119,7 @@ class Game {
 
   private void runningState() {
     if (!initialized) return;
+    ui.highScoreInterupt();
 
     Phase p = getPhase();
 
@@ -151,6 +152,10 @@ class Game {
       gs = new GameSaver();
       gs.start();
     }
+  }
+
+  public void stop(){
+    ui.highScoreInterupt();
   }
 
   class GameSaver extends Thread{
